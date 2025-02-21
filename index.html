@@ -342,7 +342,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/02/19/VietASR%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          VietASR是一个针对小语种的ASR Pipeline。优化了HuBERT pre-training for Zipformer并introduces a supervised codebook。
+          概述 VietASR是一个针对小语种的ASR Pipeline，结合了HuBert和Zipformer，本质是HuBert对ASR的适配。 改动  HuBert使用Fbank直接进行掩码，替代音频+CNN。 回顾，HuBert中  \[ L_m(f;X,M,Z)= \sum_{t\in M}logp_f(z_t|\tilde{X},t) \] \[ p_f^{(k)}(c
         </div>
       </a>
 
