@@ -19,17 +19,23 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Whisper：弱监督方法。将数据集从4h做到了68h。模型仅仅是Transformer模型。">
+    <meta name="description" content="LAS Listen: Encoder Attend: Attention Spell:Decoder 典型的seq2seq with attention Encoder  输入acoustic features， 输出提取出的特征    Encoder可以是RNN+CNN，也可以是self-attention 可以做down sampling 降低运算量  方法：空洞卷积">
 <meta property="og:type" content="article">
 <meta property="og:title" content="语音基础知识">
 <meta property="og:url" content="http://example.com/2025/01/19/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="Whisper：弱监督方法。将数据集从4h做到了68h。模型仅仅是Transformer模型。">
+<meta property="og:description" content="LAS Listen: Encoder Attend: Attention Spell:Decoder 典型的seq2seq with attention Encoder  输入acoustic features， 输出提取出的特征    Encoder可以是RNN+CNN，也可以是self-attention 可以做down sampling 降低运算量  方法：空洞卷积">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/LAS_Listen.png">
+<meta property="og:image" content="http://example.com/images/LAS_Speak.png">
+<meta property="og:image" content="http://example.com/images/CTC.jpg">
+<meta property="og:image" content="http://example.com/images/RNA.png">
+<meta property="og:image" content="http://example.com/images/RNN-T.png">
 <meta property="article:published_time" content="2025-01-19T17:01:39.000Z">
-<meta property="article:modified_time" content="2025-01-21T01:53:31.241Z">
+<meta property="article:modified_time" content="2025-02-22T02:26:51.059Z">
 <meta property="article:author" content="Yujie Tu">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/LAS_Listen.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -249,7 +255,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          23 字
+          223 字
         
       </span>
     
@@ -260,7 +266,7 @@
         
         
         
-          1 分钟
+          2 分钟
         
       </span>
     
@@ -302,7 +308,49 @@
             
               <div class="markdown-body">
                 
-                <p>Whisper：弱监督方法。将数据集从4h做到了68h。模型仅仅是Transformer模型。</p>
+                <h1 id="las">LAS</h1>
+<p>Listen: Encoder Attend: Attention Spell:Decoder 典型的seq2seq with
+attention</p>
+<h2 id="encoder">Encoder</h2>
+<ul>
+<li>输入acoustic features， 输出提取出的特征</li>
+</ul>
+<p><img src="/images/LAS_Listen.png" srcset="/img/loading.gif" lazyload alt="Listen示意图" width="600"></p>
+<ul>
+<li><p>Encoder可以是RNN+CNN，也可以是self-attention</p></li>
+<li><p>可以做down sampling 降低运算量</p>
+<ul>
+<li>方法：空洞卷积（CNN）、truncated attention</li>
+</ul></li>
+</ul>
+<h2 id="attention">Attention</h2>
+<h2 id="decoder">Decoder</h2>
+<p>可以采用RNN。每一个token输出一个分布，维度=vocabulary_size</p>
+<p><img src="/images/LAS_Speak.png" srcset="/img/loading.gif" lazyload alt="Spell示意图" width="600"></p>
+<h1 id="ctc">CTC</h1>
+<ul>
+<li><p>CTC可以做到一边听一边辨识，只需要encoder把 <span
+class="math inline">\(h\)</span> 输出，通过一个线性分类器，</p></li>
+<li><p>在CTC中加入了一个特别的token，用 <span
+class="math inline">\(\emptyset\)</span>
+表示，这是为了对齐语音和文本。在两个 <span
+class="math inline">\(\emptyset\)</span> 中间重复的token合并，并去除
+<span class="math inline">\(\emptyset\)</span>。</p></li>
+<li><p>训练时，穷举所有可能性。</p></li>
+</ul>
+<p><img src="/images/CTC.jpg" srcset="/img/loading.gif" lazyload alt="CTC示意图" width="600"></p>
+<h1 id="rna">RNA</h1>
+<p>CTC 的 decoder看不到前面的信息，因此把linear
+classifier换成RNN或者LSTM。</p>
+<p><img src="/images/RNA.png" srcset="/img/loading.gif" lazyload alt="RNA示意图" width="600"></p>
+<h1 id="rnn-t">RNN-T</h1>
+<ul>
+<li><p>吃一个输入，输出多个token</p></li>
+<li><p>看到一个输入之后就一直输出，直到输出到模型觉得满意为止(输出 <span
+class="math inline">\(\emptyset\)</span>)</p></li>
+</ul>
+<p><img src="/images/RNN-T.png" srcset="/img/loading.gif" lazyload alt="RNN-T" width="600"></p>
+<p>Whisper：弱监督方法。将数据集从4h做到了68h。模型仅仅是Transformer模型。</p>
 
                 
               </div>

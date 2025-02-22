@@ -342,7 +342,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/02/19/VietASR%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          概述 VietASR是一个针对小语种的ASR Pipeline，结合了HuBert和Zipformer，本质是HuBert对ASR的适配。 改动  HuBert使用Fbank直接进行掩码，替代音频+CNN。 回顾，HuBert中  \[ L_m(f;X,M,Z)= \sum_{t\in M}logp_f(z_t|\tilde{X},t) \] \[ p_f^{(k)}(c
+          概述 VietASR是一个针对小语种的ASR Pipeline，结合了HuBert和Zipformer，本质是HuBert对ASR的适配。 对HuBert的改动  VietASR使用Fbank直接进行掩码，替代音频+CNN。    修改损失函数  回顾，HuBert中 \[ L_m(f;X,M,Z)= \sum_{t\in M}logp_f(z_t|\tilde{X},t
         </div>
       </a>
 
@@ -490,7 +490,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/01/19/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" target="_self">
         <div>
-          Whisper：弱监督方法。将数据集从4h做到了68h。模型仅仅是Transformer模型。
+          LAS Listen: Encoder Attend: Attention Spell:Decoder 典型的seq2seq with attention Encoder  输入acoustic features， 输出提取出的特征    Encoder可以是RNN+CNN，也可以是self-attention 可以做down sampling 降低运算量  方法：空洞卷积
         </div>
       </a>
 
@@ -612,13 +612,6 @@
 
           </div>
         
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/basic/">#basic</a>
-            
-          </div>
         
       </div>
     </article>
