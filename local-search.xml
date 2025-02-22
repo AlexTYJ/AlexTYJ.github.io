@@ -27,7 +27,7 @@
     <link href="/2025/02/19/Zipformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <url>/2025/02/19/Zipformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<h1 id="简介">简介</h1><p>ASR模型，基于Conformer改进</p><h1 id="改进点">改进点</h1><h2 id="downsampled-encoder-structure">Downsampled encoderstructure</h2><ul><li>不同于 Conformer 只在一个固定的帧率 25Hz 操作，Zipformer采用了一个类似于 U-Net的结构，在不同帧率上学习不同时间分辨率的时域表征。</li></ul><h2 id="zipformer-block">Zipformer block</h2><p>扩展conformer块结构</p><h3 id="non-linear-attention">Non-Linear Attention</h3><h3 id="bypass">Bypass</h3><h2 id="biasnorm">BiasNorm</h2><h2 id="swoosh-激活函数">Swoosh 激活函数</h2>]]></content>
     
     
     
