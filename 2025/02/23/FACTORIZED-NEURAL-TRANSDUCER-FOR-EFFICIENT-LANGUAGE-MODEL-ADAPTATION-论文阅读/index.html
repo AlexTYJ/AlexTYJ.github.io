@@ -19,26 +19,26 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="HuBert示意图  概述  作用：从无监督数据中学习隐层表示。 端口：输入为音频，输出为隐层表示。  训练过程：  利用Acoustic Unit Discovery System得到label 通过HuBERT从mask之后的输入中得到隐层表示z 计算label和预测之间的loss  细节 Acoustic Unit Discovery 可以理解为语音离散">
+    <meta name="description" content="为什么 Neural Transducer 中的Predictor无法被视作语言模型 因为需要预测 φ Factorized Neural Transducer 一个专门用于预测空白符号 φ，称为blank predictor; 另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HuBert论文阅读">
-<meta property="og:url" content="http://example.com/2025/02/19/HuBert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
+<meta property="og:title" content="FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读">
+<meta property="og:url" content="http://example.com/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="HuBert示意图  概述  作用：从无监督数据中学习隐层表示。 端口：输入为音频，输出为隐层表示。  训练过程：  利用Acoustic Unit Discovery System得到label 通过HuBERT从mask之后的输入中得到隐层表示z 计算label和预测之间的loss  细节 Acoustic Unit Discovery 可以理解为语音离散">
+<meta property="og:description" content="为什么 Neural Transducer 中的Predictor无法被视作语言模型 因为需要预测 φ Factorized Neural Transducer 一个专门用于预测空白符号 φ，称为blank predictor; 另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/HuBert_1.png">
-<meta property="article:published_time" content="2025-02-20T04:28:50.000Z">
-<meta property="article:modified_time" content="2025-02-21T04:08:59.684Z">
+<meta property="og:image" content="http://example.com/images/factorized_neural_Transducer.png">
+<meta property="article:published_time" content="2025-02-24T02:51:05.000Z">
+<meta property="article:modified_time" content="2025-02-24T05:01:10.275Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/images/HuBert_1.png">
+<meta name="twitter:image" content="http://example.com/images/factorized_neural_Transducer.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>HuBert论文阅读 - Alex&#39;s Blog</title>
+  <title>FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读 - Alex&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -229,7 +229,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="HuBert论文阅读"></span>
+            <span id="subtitle" data-typed-text="FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读"></span>
           
         </div>
 
@@ -240,8 +240,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-19 20:28" pubdate>
-          2025年2月19日 晚上
+        <time datetime="2025-02-23 18:51" pubdate>
+          2025年2月23日 晚上
         </time>
       </span>
     
@@ -252,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          626 字
+          54 字
         
       </span>
     
@@ -263,7 +263,7 @@
         
         
         
-          6 分钟
+          1 分钟
         
       </span>
     
@@ -300,90 +300,18 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">HuBert论文阅读</h1>
+            <h1 id="seo-header">FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读</h1>
             
             
               <div class="markdown-body">
                 
-                <figure>
-<img src="/images/HuBert_1.png" srcset="/img/loading.gif" lazyload alt="HuBert示意图" />
-<figcaption aria-hidden="true">HuBert示意图</figcaption>
-</figure>
-<h1 id="概述">概述</h1>
-<ul>
-<li>作用：从无监督数据中学习隐层表示。</li>
-<li>端口：输入为音频，输出为隐层表示。</li>
-</ul>
-<h1 id="训练过程">训练过程：</h1>
-<ol type="1">
-<li>利用Acoustic Unit Discovery System得到label</li>
-<li>通过HuBERT从mask之后的输入中得到隐层表示z</li>
-<li>计算label和预测之间的loss</li>
-</ol>
-<h1 id="细节">细节</h1>
-<h2 id="acoustic-unit-discovery">Acoustic Unit Discovery</h2>
-<p>可以理解为语音离散化。</p>
-<p>一些记号：</p>
-<p>T个frame的语音 $ X = [x_1,..,x_T] $。Acoustic Unit
-Discovery模型输出的hidden units为 $ h(X)=Z=[z_1,..,z_T]$，其中 <span
-class="math inline">\(z_t \in [C]\)</span>
-是一个C-class的变量。h是一个非监督的聚类模型，如k-means on MFCC。</p>
-<h2 id="mask">Mask</h2>
-<p>使用了和wav2vec 2类似的方法，首先选择 <span
-class="math inline">\(p%\)</span>
-time-steps作为开始序号，然后从各个序号后面数 <span
-class="math inline">\(l\)</span> 个steps作为要mask的区域。</p>
-<p>假设<span class="math inline">\(M \subset [T]\)</span>
-为要mask的区域， <span class="math inline">\(\tilde{X}\)</span>
-表示被mask之后的输入，定义在mask区域上的entropy-loss为：</p>
-<p><span class="math display">\[
-L_m(f;X,M,Z)= \sum_{t\in M}logp_f(z_t|\tilde{X},t)
-\]</span></p>
-<p>相应的定义不在mask区域上的enrtopy-loss：</p>
-<p><span class="math display">\[
-L_u(f;X,M,Z)= \sum_{t\notin M}logp_f(z_t|\tilde{X},t)
-\]</span></p>
-<p>最终的loss为：</p>
-<p><span class="math display">\[
-L = \alpha L_m + (1-\alpha)L_u
-\]</span></p>
-<p>loss公式中，<span class="math inline">\(p_f\)</span>的公式如下；</p>
-<p><span class="math display">\[
-p_f^{(k)}(c | \tilde{X}, t) = \frac{\exp(\text{sim}(A^{(k)} o_t,
-e_c)/\tau )}{\sum\limits_{c&#39; =1}^{C} \exp(\text{sim}(A^{(k)} o_t,
-e_{c&#39;})/\tau )}
-\]</span></p>
-<p>其中 <span class="math inline">\(A^{(k)}\)</span>
-是第k个聚类的投影矩阵，乘以 <span class="math inline">\(o_t\)</span>
-之后变成C-class的离散变量，其中 <span class="math inline">\([o_1, ...,
-o_T]\)</span> 为Bert的输出。 <span class="math inline">\(e_c\)</span> 是
-<span class="math inline">\(c\)</span> 的嵌入向量，<span
-class="math inline">\(sim(·,·)\)</span>
-是两个向量之间的余弦相似度。<span class="math inline">\(\tau\)</span>
-是logit scaling factor。</p>
-<p>注意这几个变量分别代表什么。我们可以从两条路径来分析</p>
-<ol type="1">
-<li><p><strong>音频通过Acoustic Unit Discovery模型，得到codewords <span
-class="math inline">\([z_1,..,z_T]\)</span>，这是一组离散的类别。每一个类别
-<span class="math inline">\(c\)</span> 我们赋予一个嵌入向量，这就是
-<span
-class="math inline">\(e_c\)</span>，这是标签生成的路径。</strong></p></li>
-<li><p><strong>音频通过HuBert之后得到 <span class="math inline">\([o_1,
-..., o_T]\)</span>，乘以投影矩阵 <span
-class="math inline">\(A\)</span>，计算和标签的相似度。</strong></p></li>
-</ol>
-<h2 id="cluster-ensembles">Cluster Ensembles</h2>
-<p>k-means根据初始值和k值的不同，其表现也会大不相同。因此作者采用多个不同参数的k-means进行学习，这就是Cluster
-Ensembles。设用 <span
-class="math inline">\(Z^{(k)}\)</span>表示第k个聚类模型生成的sequence。故此时：</p>
-<p><span class="math display">\[
-L_m(f;X,\{Z^{(k)}\}_k,M)=\sum_{t\in M} \sum_{k} log
-p_f^{k}(z_t^{k}|\tilde{X},t)
-\]</span></p>
-<h2 id="iterative-refinement-of-cluster-assignments">Iterative
-Refinement of Cluster Assignments</h2>
-<p>虽然可以直接在MFCCs这样的acoustic
-features上直接得到label，但随着学习的进行，这种label显得太过粗糙。因此，在学习进行到一定程度时，我们在模型学习到的表示上重新学习聚类模型来替代之前的聚类模型，提高了模型的精度。</p>
+                <h1 id="为什么-neural-transducer-中的predictor无法被视作语言模型">为什么
+Neural Transducer 中的Predictor无法被视作语言模型</h1>
+<p>因为需要预测 φ</p>
+<h1 id="factorized-neural-transducer">Factorized Neural Transducer</h1>
+<p>一个专门用于预测空白符号 φ，称为blank predictor;
+另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor。</p>
+<p><img src="/images/factorized_neural_Transducer.png" srcset="/img/loading.gif" lazyload alt="factorized neural Transducer" width="600"></p>
 
                 
               </div>
@@ -408,8 +336,8 @@ features上直接得到label，但随着学习的进行，这种label显得太�
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>HuBert论文阅读</div>
-      <div>http://example.com/2025/02/19/HuBert论文阅读/</div>
+      <div>FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读</div>
+      <div>http://example.com/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-论文阅读/</div>
     </div>
     <div class="license-meta">
       
@@ -421,7 +349,7 @@ features上直接得到label，但随着学习的进行，这种label显得太�
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年2月19日</div>
+          <div>2025年2月23日</div>
         </div>
       
       
@@ -453,18 +381,12 @@ features上直接得到label，但随着学习的进行，这种label显得太�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/02/19/Zipformer%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="Zipformer论文阅读">
-                        <span class="hidden-mobile">Zipformer论文阅读</span>
+                      <a href="/2025/02/19/HuBert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="HuBert论文阅读">
+                        <span class="hidden-mobile">HuBert论文阅读</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

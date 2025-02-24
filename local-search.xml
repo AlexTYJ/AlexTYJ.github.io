@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读</title>
+    <link href="/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="为什么-neural-transducer-中的predictor无法被视作语言模型">为什么Neural Transducer 中的Predictor无法被视作语言模型</h1><p>因为需要预测 φ</p><h1 id="factorized-neural-transducer">Factorized Neural Transducer</h1><p>一个专门用于预测空白符号 φ，称为blank predictor;另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor。</p><p><img src="/images/factorized_neural_Transducer.png" alt="factorized neural Transducer" width="600"></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>HuBert论文阅读</title>
     <link href="/2025/02/19/HuBert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <url>/2025/02/19/HuBert%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
