@@ -254,15 +254,55 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
-          FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读
+        <a href="/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
+          unispeech 论文阅读
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          为什么 Neural Transducer 中的Predictor无法被视作语言模型 因为需要预测 φ Factorized Neural Transducer 一个专门用于预测空白符号 φ，称为blank predictor; 另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor。
+          概述 利用L、M、N三个数据集（定义见下）。  在L、M上预训练模型。 冻结特征提取器，并在N上对Transformer部分进行微调。  定义 L：大规模、有标签的high-resource语种数据集 M：大规模、无标签的low-resource语种数据集 N：小规模、有标签的low-resource语种数据集 模型结构  使用multitask学习方法。  目标1：s
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-02-27 19:55" pubdate>
+              2025-02-27
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/%E8%AF%AD%E9%9F%B3%E6%8A%80%E6%9C%AF/">#语音技术</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/02/23/factorized_rnnt-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
+          Factorized RNN-T 论文阅读
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/02/23/factorized_rnnt-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
+        <div>
+          为什么 Neural Transducer 中的Predictor无法被视作语言模型 唯一区别在于因为需要预测 φ。因此想到可以将Predictor拆分。 Factorized Neural Transducer  把Predictor拆分成两部分。  专门用于预测空白符号 φ，称为blank predictor; 另一个用于预测标签词汇（不包括 φ）， 称为vocabulary
         </div>
       </a>
 

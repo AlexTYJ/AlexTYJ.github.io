@@ -4,11 +4,30 @@
   
   
   <entry>
-    <title>FACTORIZED NEURAL TRANSDUCER FOR EFFICIENT LANGUAGE MODEL ADAPTATION 论文阅读</title>
-    <link href="/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
-    <url>/2025/02/23/FACTORIZED-NEURAL-TRANSDUCER-FOR-EFFICIENT-LANGUAGE-MODEL-ADAPTATION-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    <title>unispeech 论文阅读</title>
+    <link href="/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
     
-    <content type="html"><![CDATA[<h1 id="为什么-neural-transducer-中的predictor无法被视作语言模型">为什么Neural Transducer 中的Predictor无法被视作语言模型</h1><p>因为需要预测 φ</p><h1 id="factorized-neural-transducer">Factorized Neural Transducer</h1><p>一个专门用于预测空白符号 φ，称为blank predictor;另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor。</p><p><img src="/images/factorized_neural_Transducer.png" alt="factorized neural Transducer" width="600"></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="概述">概述</h1><p>利用L、M、N三个数据集（定义见下）。</p><ol type="1"><li><p>在L、M上预训练模型。</p></li><li><p>冻结特征提取器，并在N上对Transformer部分进行微调。</p></li></ol><h1 id="定义">定义</h1><p>L：大规模、有标签的high-resource语种数据集</p><p>M：大规模、无标签的low-resource语种数据集</p><p>N：小规模、有标签的low-resource语种数据集</p><h1 id="模型结构">模型结构</h1><p><img src="/images/unispeech.png" alt="unispeech" width="600"></p><p>使用multitask学习方法。</p><ul><li>目标1：sequence-level CTC loss</li></ul><p><span class="math display">\[L_{\text{ctc}} = - \log p_{\text{ctc}}(y|x) = \sum_{\pi \in \Phi_{x,y}}p(\pi | c_1, \dots, c_T)\]</span></p><ul><li>目标2：基于wav2vec2.0，在masked contextual representations和discretelatent representations之间的对比学习</li></ul><p>对比学习loss:</p><p><span class="math display">\[L_c = - \log \frac{\exp(\text{sim}(c_t, q_t) / \kappa)}{\sum_{q&#39;\sim Q_t} \exp(\text{sim}(c_t, q&#39;) / \kappa)}\]</span></p><p>codebook diversity loss：</p><p><span class="math display">\[\quad L_d = \frac{1}{GV} \sum_{g=1}^{G} \sum_{v=1}^{V} \bar{p}_{g,v}\log \bar{p}_{g,v}\]</span></p><p><span class="math display">\[L_{\text{self}} = L_c + 0.1 \times L_d\]</span></p><p>最终预训练的loss：</p><p><span class="math display">\[\quad L = \sum_{(x,y) \in L} \left( \alpha L_{\text{ctc}} + (1 - \alpha)L_{\text{self}} \right) + \sum_{(x) \in M} L_{\text{self}}\]</span></p><h1 id="问题">问题</h1><ol type="1"><li>训练时是混合训练吗？</li><li>为什么要训练码本？如果码本和Transformer结构要尽量相似的话</li></ol>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Factorized RNN-T 论文阅读</title>
+    <link href="/2025/02/23/factorized_rnnt-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/02/23/factorized_rnnt-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="为什么-neural-transducer-中的predictor无法被视作语言模型">为什么Neural Transducer 中的Predictor无法被视作语言模型</h1><p>唯一区别在于因为需要预测 φ。因此想到可以将Predictor拆分。</p><h1 id="factorized-neural-transducer">Factorized Neural Transducer</h1><p><img src="/images/factorized_neural_Transducer.png" alt="factorized neural Transducer" width="600"></p><p>把Predictor拆分成两部分。</p><ol type="1"><li>专门用于预测空白符号 φ，称为blank predictor;</li><li>另一个用于预测标签词汇（不包括 φ）， 称为vocabulary predictor</li></ol><p>这样，Predictor_v就相当于一个语言模型。</p><h1 id="loss-function">Loss function</h1><p>原始的Transducer的Loss为：</p><p><span class="math display">\[ J_t = -\log P(y \in Y^* | x) = -\log\sum_{\alpha \in \beta^{-1}(y)} P(\alpha | x) \]</span></p><p>而factorized_rnnt的Loss为：</p><p><span class="math display">\[J_f = J_t - \lambda \log P(y_1^U)\]</span></p>]]></content>
     
     
     
