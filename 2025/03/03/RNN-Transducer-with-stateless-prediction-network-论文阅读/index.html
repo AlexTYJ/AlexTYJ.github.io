@@ -19,26 +19,27 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="概述 利用L、M、N三个数据集（定义见下）。  在L、M上预训练模型。 冻结特征提取器，并在N上对Transformer部分进行微调。  定义 L：大规模、有标签的high-resource语种数据集 M：大规模、无标签的low-resource语种数据集 N：小规模、有标签的low-resource语种数据集 模型结构  使用multitask学习方法。  目标1：s">
+    <meta name="description" content="概述 过去， prediction network被认为是语言模型。这篇文章推翻了这一论点。 证据是，经过实验，一个stateless(例如非recurrent)的prediction network（这种网络仅依赖于上一个时刻输出）在使用wordpieces时，几乎能够与原始RNNT表现相当。 结论：RNNT 的 prediction network并不像经典 ASR 系统中的语言模">
 <meta property="og:type" content="article">
-<meta property="og:title" content="unispeech 论文阅读">
-<meta property="og:url" content="http://example.com/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
+<meta property="og:title" content="RNN-Transducer with stateless prediction network 论文阅读">
+<meta property="og:url" content="http://example.com/2025/03/03/RNN-Transducer-with-stateless-prediction-network-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="概述 利用L、M、N三个数据集（定义见下）。  在L、M上预训练模型。 冻结特征提取器，并在N上对Transformer部分进行微调。  定义 L：大规模、有标签的high-resource语种数据集 M：大规模、无标签的low-resource语种数据集 N：小规模、有标签的low-resource语种数据集 模型结构  使用multitask学习方法。  目标1：s">
+<meta property="og:description" content="概述 过去， prediction network被认为是语言模型。这篇文章推翻了这一论点。 证据是，经过实验，一个stateless(例如非recurrent)的prediction network（这种网络仅依赖于上一个时刻输出）在使用wordpieces时，几乎能够与原始RNNT表现相当。 结论：RNNT 的 prediction network并不像经典 ASR 系统中的语言模">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/unispeech.png">
-<meta property="article:published_time" content="2025-02-28T03:55:20.000Z">
-<meta property="article:modified_time" content="2025-02-28T04:23:07.060Z">
+<meta property="og:image" content="http://example.com/images/stateless_results_1.png">
+<meta property="og:image" content="http://example.com/images/RNNT-SLP.png">
+<meta property="article:published_time" content="2025-03-03T20:47:46.000Z">
+<meta property="article:modified_time" content="2025-03-04T00:00:46.717Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/images/unispeech.png">
+<meta name="twitter:image" content="http://example.com/images/stateless_results_1.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>unispeech 论文阅读 - Alex&#39;s Blog</title>
+  <title>RNN-Transducer with stateless prediction network 论文阅读 - Alex&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -229,7 +230,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="unispeech 论文阅读"></span>
+            <span id="subtitle" data-typed-text="RNN-Transducer with stateless prediction network 论文阅读"></span>
           
         </div>
 
@@ -240,8 +241,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-02-27 19:55" pubdate>
-          2025年2月27日 晚上
+        <time datetime="2025-03-03 12:47" pubdate>
+          2025年3月3日 下午
         </time>
       </span>
     
@@ -252,7 +253,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          256 字
+          241 字
         
       </span>
     
@@ -300,58 +301,44 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">unispeech 论文阅读</h1>
+            <h1 id="seo-header">RNN-Transducer with stateless prediction network 论文阅读</h1>
             
             
               <div class="markdown-body">
                 
                 <h1 id="概述">概述</h1>
-<p>利用L、M、N三个数据集（定义见下）。</p>
+<p>过去， prediction
+network被认为是语言模型。这篇文章推翻了这一论点。</p>
+<p>证据是，经过实验，一个stateless(例如非recurrent)的prediction
+network（这种网络仅依赖于上一个时刻输出）在使用wordpieces时，几乎能够与原始RNNT表现相当。</p>
+<p>结论：RNNT 的 prediction network并不像经典 ASR
+系统中的语言模型那样工作。相反，它的作用仅限于帮助模型 align
+输入音频，而 RNNT 的encoder 和 joint networks
+acoustic和linguistic信息。</p>
+<h1 id="实验">实验</h1>
+<p>三组实验：</p>
+<p>首先用文本数据预训练prediction network</p>
 <ol type="1">
-<li><p>在L、M上预训练模型。</p></li>
-<li><p>冻结特征提取器，并在N上对Transformer部分进行微调。</p></li>
+<li>不冻结</li>
+<li>冻结prediction network</li>
+<li>prediction network中增加两层，冻结</li>
 </ol>
-<h1 id="定义">定义</h1>
-<p>L：大规模、有标签的high-resource语种数据集</p>
-<p>M：大规模、无标签的low-resource语种数据集</p>
-<p>N：小规模、有标签的low-resource语种数据集</p>
-<h1 id="模型结构">模型结构</h1>
-<p><img src="/images/unispeech.png" srcset="/img/loading.gif" lazyload alt="unispeech" width="600"></p>
-<p>使用multitask学习方法。</p>
-<ul>
-<li>目标1：sequence-level CTC loss</li>
-</ul>
-<p><span class="math display">\[
-L_{\text{ctc}} = - \log p_{\text{ctc}}(y|x) = \sum_{\pi \in \Phi_{x,y}}
-p(\pi | c_1, \dots, c_T)
-\]</span></p>
-<ul>
-<li>目标2：基于wav2vec2.0，在masked contextual representations和discrete
-latent representations之间的对比学习</li>
-</ul>
-<p>对比学习loss:</p>
-<p><span class="math display">\[
-L_c = - \log \frac{\exp(\text{sim}(c_t, q_t) / \kappa)}{\sum_{q&#39;
-\sim Q_t} \exp(\text{sim}(c_t, q&#39;) / \kappa)}
-\]</span></p>
-<p>codebook diversity loss：</p>
-<p><span class="math display">\[
-\quad L_d = \frac{1}{GV} \sum_{g=1}^{G} \sum_{v=1}^{V} \bar{p}_{g,v}
-\log \bar{p}_{g,v}
-\]</span></p>
-<p><span class="math display">\[
-L_{\text{self}} = L_c + 0.1 \times L_d
-\]</span></p>
-<p>最终预训练的loss：</p>
-<p><span class="math display">\[
-\quad L = \sum_{(x,y) \in L} \left( \alpha L_{\text{ctc}} + (1 - \alpha)
-L_{\text{self}} \right) + \sum_{(x) \in M} L_{\text{self}}
-\]</span></p>
-<h1 id="问题">问题</h1>
-<ol type="1">
-<li>训练时是混合训练吗？</li>
-<li>为什么要训练码本？如果码本和Transformer结构要尽量相似的话</li>
-</ol>
+<figure>
+<img src="/images/stateless_results_1.png" srcset="/img/loading.gif" lazyload
+alt="freezing predictor network的WER最高" />
+<figcaption aria-hidden="true">freezing predictor
+network的WER最高</figcaption>
+</figure>
+<p>结果：freezing predictor
+network的WER最高。这表明文本数据中学到的知识反而会增加WER。</p>
+<h1 id="stateless-prediction-network-的表现">Stateless prediction
+network 的表现</h1>
+<figure>
+<img src="/images/RNNT-SLP.png" srcset="/img/loading.gif" lazyload alt="RNNT-SLP结构图" />
+<figcaption aria-hidden="true">RNNT-SLP结构图</figcaption>
+</figure>
+<p>stateless prediction network 如果使用
+graphemes会出现重复的问题。由于只看到前一个单词，所以没有信息知道已经说了几个。例如，food可能会输出fooooood。如果使用wordpiece就不会有这个问题。</p>
 
                 
               </div>
@@ -376,8 +363,8 @@ L_{\text{self}} \right) + \sum_{(x) \in M} L_{\text{self}}
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>unispeech 论文阅读</div>
-      <div>http://example.com/2025/02/27/unispeech-论文阅读/</div>
+      <div>RNN-Transducer with stateless prediction network 论文阅读</div>
+      <div>http://example.com/2025/03/03/RNN-Transducer-with-stateless-prediction-network-论文阅读/</div>
     </div>
     <div class="license-meta">
       
@@ -389,7 +376,7 @@ L_{\text{self}} \right) + \sum_{(x) \in M} L_{\text{self}}
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年2月27日</div>
+          <div>2025年3月3日</div>
         </div>
       
       
@@ -421,18 +408,12 @@ L_{\text{self}} \right) + \sum_{(x) \in M} L_{\text{self}}
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/03/RNN-Transducer-with-stateless-prediction-network-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="RNN-Transducer with stateless prediction network 论文阅读">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">RNN-Transducer with stateless prediction network 论文阅读</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/02/23/factorized_rnnt-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="Factorized RNN-T 论文阅读">
-                        <span class="hidden-mobile">Factorized RNN-T 论文阅读</span>
+                      <a href="/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="unispeech 论文阅读">
+                        <span class="hidden-mobile">unispeech 论文阅读</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>RNN-Transducer with stateless prediction network 论文阅读</title>
+    <link href="/2025/03/03/RNN-Transducer-with-stateless-prediction-network-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/03/03/RNN-Transducer-with-stateless-prediction-network-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="概述">概述</h1><p>过去， predictionnetwork被认为是语言模型。这篇文章推翻了这一论点。</p><p>证据是，经过实验，一个stateless(例如非recurrent)的predictionnetwork（这种网络仅依赖于上一个时刻输出）在使用wordpieces时，几乎能够与原始RNNT表现相当。</p><p>结论：RNNT 的 prediction network并不像经典 ASR系统中的语言模型那样工作。相反，它的作用仅限于帮助模型 align输入音频，而 RNNT 的encoder 和 joint networksacoustic和linguistic信息。</p><h1 id="实验">实验</h1><p>三组实验：</p><p>首先用文本数据预训练prediction network</p><ol type="1"><li>不冻结</li><li>冻结prediction network</li><li>prediction network中增加两层，冻结</li></ol><figure><img src="/images/stateless_results_1.png"alt="freezing predictor network的WER最高" /><figcaption aria-hidden="true">freezing predictornetwork的WER最高</figcaption></figure><p>结果：freezing predictornetwork的WER最高。这表明文本数据中学到的知识反而会增加WER。</p><h1 id="stateless-prediction-network-的表现">Stateless predictionnetwork 的表现</h1><figure><img src="/images/RNNT-SLP.png" alt="RNNT-SLP结构图" /><figcaption aria-hidden="true">RNNT-SLP结构图</figcaption></figure><p>stateless prediction network 如果使用graphemes会出现重复的问题。由于只看到前一个单词，所以没有信息知道已经说了几个。例如，food可能会输出fooooood。如果使用wordpiece就不会有这个问题。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>unispeech 论文阅读</title>
     <link href="/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <url>/2025/02/27/unispeech-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
