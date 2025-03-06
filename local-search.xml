@@ -4,6 +4,44 @@
   
   
   <entry>
+    <title>RNN-T 论文阅读</title>
+    <link href="/2025/03/05/RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/03/05/RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="公式推导">公式推导</h1><p>定义：</p><ul><li>定义任务输入：<span class="math inline">\(x = (x_1, x_2, \dots,x_T)\)</span>，其中 <span class="math inline">\(x\)</span> 中的元素<span class="math inline">\(x_i \in \mathcal{X}\)</span>，<spanclass="math inline">\(x \in \mathcal{X}^*\)</span>。每一个<spanclass="math inline">\(x_i\)</span> 一般为MFCC的倒谱系数构成的向量。</li><li>定义任务输出：<span class="math inline">\(y = (y_1, y_2, \dots,y_U)\)</span>，其中 <span class="math inline">\(y\)</span> 中的元素<span class="math inline">\(y_i \in \mathcal{Y}\)</span>，<spanclass="math inline">\(y \in \mathcal{Y}^*\)</span>。每一个 <spanclass="math inline">\(y_i\)</span>一般是一个one-hot的向量，编码特定的phoneme。</li><li>定义集合 <span class="math inline">\(\bar{\mathcal{Y}} = \mathcal{Y}\cup \{\varnothing\}\)</span>，作用是在输出中加入一些<spanclass="math inline">\(\varnothing\)</span></li><li>定义函数 <span class="math inline">\(B: \bar{\mathcal{Y}}^* \to\mathcal{Y}^*\)</span>，作用是去除所有的 <spanclass="math inline">\(\varnothing\)</span></li><li>定义模型RNN-Transducer，输入是<spanclass="math inline">\(x\)</span>，输出是<span class="math inline">\(y\in\mathcal{Y}^*\)</span>，该模型的概率建模为：<spanclass="math inline">\(\Pr(y \in \mathcal{Y}^* | x)\)</span></li></ul><p>由以上定义我们可以得知： <span class="math display">\[\Pr(y \in\mathcal{Y}^* | x)=\sum_{a \in B^{-1}(y)} \Pr(a | x)\]</span>即我们需要枚举所有可能的添加 <spanclass="math inline">\(\varnothing\)</span>的方式，把它们的概率相加，得到最终的概率。</p><p>下面开始，我们来想办法解决<spanclass="math inline">\(\sum\)</span>内的部分，即 <spanclass="math inline">\(\Pr(a \in \bar {\mathcal{Y}}^* | x)\)</span></p><p>我们使用两个网络：</p><ol type="1"><li>Transcription Network：输入为 <spanclass="math inline">\(x\)</span>, 输出Transcription Vectors <spanclass="math inline">\(f=(f_1,f_2,...,f_T)\)</span>（为了方便起见定义长度为<spanclass="math inline">\(T\)</span>，但实际上如果做pooling的话可能不是<spanclass="math inline">\(T\)</span></li><li>Prediction Network：输入为 <spanclass="math inline">\(y\)</span>，输出为prediction vector <spanclass="math inline">\(g=(g_0,g_1,...,g_U)\)</span></li></ol><h2 id="prediction-network">Prediction Network</h2><ul><li><p>Prediction Network <span class="math inline">\(G\)</span>是一个RNN或LSTM。</p></li><li><p>目标：在给定过去的输出序列<spanclass="math inline">\(y\)</span>时，预测下一个可能的输出元素。因此，它类似于标准的next-stepprediction RNN（或LSTM），但额外允许预测<spanclass="math inline">\(\varnothing\)</span>。</p></li><li><p>输入：<span class="math inline">\((\varnothing,y_1,y_2,...,y_U)\)</span>，即在<spanclass="math inline">\(y\)</span>前面加了一个<spanclass="math inline">\(\varnothing\)</span>。每个<spanclass="math inline">\(y_i\)</span>采用one-hot编码，假设维度为K。</p></li><li><p>输出：<spanclass="math inline">\(g=(g_0,g_1,...,g_U)\)</span>，每个<spanclass="math inline">\(g_i\)</span>维度为K+1（加上了<spanclass="math inline">\(\varnothing\)</span>）。</p></li></ul><h2 id="transcription-network">Transcription Network</h2><ul><li>Transcription Network <span class="math inline">\(F\)</span>是一个双向RNN（或LSTM）。</li><li>输入为<spanclass="math inline">\(x\)</span>，也就是MFCC的系数向量序列。</li><li>输出为<spanclass="math inline">\(f\)</span>，同样为K+1维向量的序列（加上了<spanclass="math inline">\(\varnothing\)</span>）。</li></ul><h2 id="output-distribution">Output Distribution</h2><p>我们回顾两个网络的输入输出：</p><ol type="1"><li>Transcription Network：输入 <span class="math inline">\(x\)</span>,输出<span class="math inline">\(f=(f_1,f_2,...,f_T)\)</span></li><li>Prediction Network：输入 <spanclass="math inline">\(y\)</span>，输出 <spanclass="math inline">\(g=(g_0,g_1,...,g_U)\)</span></li></ol><p>接下来我们整合两个网络。定义: <spanclass="math display">\[h(k,t,u)=e^{f_t^k+g_u^k}\]</span></p><p>其中<span class="math inline">\(1\leq t \leq T\)</span>, <spanclass="math inline">\(0 \leq u \leq U\)</span>，标签 <spanclass="math inline">\(k\in \bar{\mathcal{Y}}\)</span>。<spanclass="math inline">\(k\)</span>作为上标时表示向量的第<spanclass="math inline">\(k\)</span>个元素。</p><p>归一化： <span class="math display">\[\Pr(k \in \bar {\mathcal{Y}} |t,u)=\frac{h(k,t,u)}{\sum_{k&#39;\in\mathcal{Y}}h(k&#39;,t,u)}\]</span></p><p>这个式子代表着：在<span class="math inline">\(f\)</span>输出到<spanclass="math inline">\(t\)</span>，<spanclass="math inline">\(g\)</span>输出到<spanclass="math inline">\(u\)</span>时，预测为<spanclass="math inline">\(k\)</span>的概率。而<spanclass="math inline">\(f_t^k\)</span>和<spanclass="math inline">\(g_u^k\)</span>可以直接相加的底气在于，他们都代表着同一意义的概率。</p><blockquote><p>Q：为什么要枚举<span class="math inline">\(t\)</span>和<spanclass="math inline">\(u\)</span>呢？他们不应该都等于<spanclass="math inline">\(k\)</span>吗？</p></blockquote><blockquote><p>A：因为存在<spanclass="math inline">\(\varnothing\)</span>，所以在同一个位置上，<spanclass="math inline">\(f\)</span>和<spanclass="math inline">\(g\)</span>并不一定进行到了同一个字符，所以需要枚举所有<spanclass="math inline">\(t\)</span>和<spanclass="math inline">\(u\)</span>。</p></blockquote><blockquote><p>实际上，由于<span class="math inline">\(g\)</span>的输入是<spanclass="math inline">\(y\)</span>，它除了第一个字符是<spanclass="math inline">\(\varnothing\)</span>，后面的都是字符，而<spanclass="math inline">\(f\)</span>却可能出现很多<spanclass="math inline">\(\varnothing\)</span>，因此他们大概率是对不齐的。</p></blockquote><p>现在我们对比我们的目标式子：</p><p><span class="math display">\[\Pr(a \in \bar {\mathcal{Y}}^* |x)\]</span></p><p>我们还剩最后一步：对<span class="math inline">\(t\)</span>和<spanclass="math inline">\(u\)</span>进行累计，求出联合概率分布。</p><p>为了方便推导，我们定义两个记号：</p><p><span class="math display">\[y(t,u) \equiv \Pr(y_{u+1} | t, u)\]</span> <span class="math display">\[\varnothing(t, u) \equiv \Pr(\varnothing | t, u)\]</span> 他们表示在<spanclass="math inline">\((t,u)\)</span>这个节点上，预测出的为答案为字符或者<spanclass="math inline">\(\varnothing\)</span>的概率。</p><h2 id="forward-backward-算法">Forward-Backward 算法</h2><p>这个算法告诉我们</p><h3 id="forward算法">Forward算法</h3><p>定义前向变量 <span class="math inline">\(\alpha(t, u)\)</span> 为在<span class="math inline">\(f[1:t]\)</span> 中输出 <spanclass="math inline">\(y[1:u]\)</span>的概率。所有 <spanclass="math inline">\(1 \leq t \leq T\)</span> 和 <spanclass="math inline">\(0 \leq u \leq U\)</span>的前向变量可以通过递归计算：</p><p><span class="math display">\[\alpha(t, u) = \alpha(t - 1, u) \varnothing(t - 1, u) + \alpha(t, u - 1)y(t, u - 1)  \]</span></p><p>初始条件为：<span class="math inline">\(\alpha(1, 0) = 1\)</span></p><p>这个式子的意思是：在<span class="math inline">\(f[1:t]\)</span>中输出<span class="math inline">\(y[1:u]\)</span>的概率，等于在<spanclass="math inline">\(f[1:t-1]\)</span>中输出 <spanclass="math inline">\(y[1:u]\)</span>的概率乘上在<spanclass="math inline">\((t,u)\)</span>这个位置生成 <spanclass="math inline">\(\varnothing\)</span> 的概率，加上在<spanclass="math inline">\(f[1:t]\)</span>中输出 <spanclass="math inline">\(y[1:u-1]\)</span>的概率乘上在<spanclass="math inline">\((t,u)\)</span>这个位置生成字符的概率。</p><p>可以形象的表示为下图：<img src="/images/RNN-T-forward.png" alt="RNN-T的Forward示例" width="400"></p><p>其中，底部的黑色节点表示在没有输出任何内容之前的空状态。</p><h2 id="backward算法">Backward算法</h2><p>类似的，我们可以定义后向变量 <span class="math inline">\(\beta(t,u)\)</span> 为在 <span class="math inline">\(f[t:T]\)</span> 中输出<span class="math inline">\(y[u+1:U]\)</span> 的概率。</p><p><span class="math display">\[ \beta(t, u) = \beta(t + 1, u)\varnothing(t, u) + \beta(t, u + 1) y(t, u)  \]</span></p><p>初始条件为：<span class="math inline">\(\beta (T,U) = \varnothing(T,U)\)</span></p><h2 id="loss-函数">Loss 函数</h2><p>至此，我们终于可以求出</p><p><span class="math display">\[\Pr(a \in \bar {\mathcal{Y}}^* | x) =\sum_{(t, u): t + u = n} \alpha(t, u) \beta(t, u) \]</span></p><p>也就是左上到右下对角线上<span class="math inline">\(\alpha(t, u)\beta(t, u)\)</span> 的总和。</p><p>于是Loss函数就是： <span class="math display">\[L = - \ln Pr(y^* | x)\]</span></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Pruned RNN-T 论文阅读</title>
+    <link href="/2025/03/05/Pruned-RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/03/05/Pruned-RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="rnn-t-的缺点">RNN-T 的缺点</h1><ol type="1"><li>损失函数计算相对较慢</li><li>占用较多内存</li></ol><h2 id="rnn-t占用较多内存">RNN-T占用较多内存</h2>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>BPE 论文阅读</title>
     <link href="/2025/03/03/BPE-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <url>/2025/03/03/BPE-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>

@@ -19,24 +19,26 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="概述 为了解决罕见词不在词汇表中的问题。 每次合并出现频率最高的词组。 唯一超参数为合并次数 伪代码 12345678910111213141516171819202122232425262728Initialize vocabulary with word frequenciesSet number of merge operationsDefine function get_stat">
+    <meta name="description" content="公式推导 定义：  定义任务输入：\(x &#x3D; (x_1, x_2, \dots, x_T)\)，其中 \(x\) 中的元素 \(x_i \in \mathcal{X}\)，\(x \in \mathcal{X}^*\)。每一个\(x_i\) 一般为MFCC的倒谱系数构成的向量。 定义任务输出：\(y &#x3D; (y_1, y_2, \dots, y_U)\)，其中 \(y\) 中的元素">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BPE 论文阅读">
-<meta property="og:url" content="http://example.com/2025/03/03/BPE-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
+<meta property="og:title" content="RNN-T 论文阅读">
+<meta property="og:url" content="http://example.com/2025/03/05/RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="概述 为了解决罕见词不在词汇表中的问题。 每次合并出现频率最高的词组。 唯一超参数为合并次数 伪代码 12345678910111213141516171819202122232425262728Initialize vocabulary with word frequenciesSet number of merge operationsDefine function get_stat">
+<meta property="og:description" content="公式推导 定义：  定义任务输入：\(x &#x3D; (x_1, x_2, \dots, x_T)\)，其中 \(x\) 中的元素 \(x_i \in \mathcal{X}\)，\(x \in \mathcal{X}^*\)。每一个\(x_i\) 一般为MFCC的倒谱系数构成的向量。 定义任务输出：\(y &#x3D; (y_1, y_2, \dots, y_U)\)，其中 \(y\) 中的元素">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-04T06:45:44.000Z">
-<meta property="article:modified_time" content="2025-03-04T06:54:15.508Z">
+<meta property="og:image" content="http://example.com/images/RNN-T-forward.png">
+<meta property="article:published_time" content="2025-03-06T04:38:38.000Z">
+<meta property="article:modified_time" content="2025-03-06T23:15:46.700Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/RNN-T-forward.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>BPE 论文阅读 - Alex&#39;s Blog</title>
+  <title>RNN-T 论文阅读 - Alex&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -227,7 +229,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="BPE 论文阅读"></span>
+            <span id="subtitle" data-typed-text="RNN-T 论文阅读"></span>
           
         </div>
 
@@ -238,8 +240,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-03 22:45" pubdate>
-          2025年3月3日 晚上
+        <time datetime="2025-03-05 20:38" pubdate>
+          2025年3月5日 晚上
         </time>
       </span>
     
@@ -250,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          55 字
+          1.2k 字
         
       </span>
     
@@ -261,7 +263,7 @@
         
         
         
-          1 分钟
+          10 分钟
         
       </span>
     
@@ -298,17 +300,184 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">BPE 论文阅读</h1>
+            <h1 id="seo-header">RNN-T 论文阅读</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="概述">概述</h1>
-<p>为了解决罕见词不在词汇表中的问题。</p>
-<p>每次合并出现频率最高的词组。</p>
-<p>唯一超参数为合并次数</p>
-<h1 id="伪代码">伪代码</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python">Initialize vocabulary <span class="hljs-keyword">with</span> word frequencies<br><br><span class="hljs-type">Set</span> number of merge operations<br><br>Define function get_stats(vocabulary):<br>    Create empty dictionary <span class="hljs-keyword">for</span> pairs<br>    For each word <span class="hljs-keyword">and</span> its frequency <span class="hljs-keyword">in</span> vocabulary:<br>        Split word into symbols<br>        For each adjacent pair of symbols:<br>            Count occurrences of each pair<br>    Return the dictionary of pairs <span class="hljs-keyword">with</span> their frequencies<br><br>Define function merge_vocab(pair, vocabulary):<br>    Create empty dictionary <span class="hljs-keyword">for</span> new vocabulary<br>    Define pattern <span class="hljs-keyword">as</span> the pair joined by space<br>    Define replacement <span class="hljs-keyword">as</span> the pair joined without space<br>    <br>    For each word <span class="hljs-keyword">and</span> its frequency <span class="hljs-keyword">in</span> vocabulary:<br>        Replace occurrences of the pair <span class="hljs-keyword">in</span> the word <span class="hljs-keyword">with</span> the merged version<br>        Store the new word <span class="hljs-keyword">and</span> its frequency <span class="hljs-keyword">in</span> new vocabulary<br>    <br>    Return new vocabulary<br><br>Repeat <span class="hljs-keyword">for</span> the defined number of merge operations:<br>    Get symbol pair frequencies <span class="hljs-keyword">from</span> vocabulary<br>    If no pairs exist, exit loop<br>    Find the most frequent pair<br>    Merge the most frequent pair <span class="hljs-keyword">in</span> vocabulary<br></code></pre></td></tr></table></figure>
+                <h1 id="公式推导">公式推导</h1>
+<p>定义：</p>
+<ul>
+<li>定义任务输入：<span class="math inline">\(x = (x_1, x_2, \dots,
+x_T)\)</span>，其中 <span class="math inline">\(x\)</span> 中的元素
+<span class="math inline">\(x_i \in \mathcal{X}\)</span>，<span
+class="math inline">\(x \in \mathcal{X}^*\)</span>。每一个<span
+class="math inline">\(x_i\)</span> 一般为MFCC的倒谱系数构成的向量。</li>
+<li>定义任务输出：<span class="math inline">\(y = (y_1, y_2, \dots,
+y_U)\)</span>，其中 <span class="math inline">\(y\)</span> 中的元素
+<span class="math inline">\(y_i \in \mathcal{Y}\)</span>，<span
+class="math inline">\(y \in \mathcal{Y}^*\)</span>。每一个 <span
+class="math inline">\(y_i\)</span>
+一般是一个one-hot的向量，编码特定的phoneme。</li>
+<li>定义集合 <span class="math inline">\(\bar{\mathcal{Y}} = \mathcal{Y}
+\cup \{\varnothing\}\)</span>，作用是在输出中加入一些<span
+class="math inline">\(\varnothing\)</span></li>
+<li>定义函数 <span class="math inline">\(B: \bar{\mathcal{Y}}^* \to
+\mathcal{Y}^*\)</span>，作用是去除所有的 <span
+class="math inline">\(\varnothing\)</span></li>
+<li>定义模型RNN-Transducer，输入是<span
+class="math inline">\(x\)</span>，输出是<span class="math inline">\(y\in
+\mathcal{Y}^*\)</span>，该模型的概率建模为：<span
+class="math inline">\(\Pr(y \in \mathcal{Y}^* | x)\)</span></li>
+</ul>
+<p>由以上定义我们可以得知： <span class="math display">\[\Pr(y \in
+\mathcal{Y}^* | x)=\sum_{a \in B^{-1}(y)} \Pr(a | x)\]</span>
+即我们需要枚举所有可能的添加 <span
+class="math inline">\(\varnothing\)</span>的方式，把它们的概率相加，得到最终的概率。</p>
+<p>下面开始，我们来想办法解决<span
+class="math inline">\(\sum\)</span>内的部分，即 <span
+class="math inline">\(\Pr(a \in \bar {\mathcal{Y}}^* | x)\)</span></p>
+<p>我们使用两个网络：</p>
+<ol type="1">
+<li>Transcription Network：输入为 <span
+class="math inline">\(x\)</span>, 输出Transcription Vectors <span
+class="math inline">\(f=(f_1,f_2,...,f_T)\)</span>（为了方便起见定义长度为<span
+class="math inline">\(T\)</span>，但实际上如果做pooling的话可能不是<span
+class="math inline">\(T\)</span></li>
+<li>Prediction Network：输入为 <span
+class="math inline">\(y\)</span>，输出为prediction vector <span
+class="math inline">\(g=(g_0,g_1,...,g_U)\)</span></li>
+</ol>
+<h2 id="prediction-network">Prediction Network</h2>
+<ul>
+<li><p>Prediction Network <span class="math inline">\(G\)</span>
+是一个RNN或LSTM。</p></li>
+<li><p>目标：在给定过去的输出序列<span
+class="math inline">\(y\)</span>时，预测下一个可能的输出元素。因此，它类似于标准的next-step
+prediction RNN（或LSTM），但额外允许预测<span
+class="math inline">\(\varnothing\)</span>。</p></li>
+<li><p>输入：<span class="math inline">\((\varnothing,
+y_1,y_2,...,y_U)\)</span>，即在<span
+class="math inline">\(y\)</span>前面加了一个<span
+class="math inline">\(\varnothing\)</span>。每个<span
+class="math inline">\(y_i\)</span>采用one-hot编码，假设维度为K。</p></li>
+<li><p>输出：<span
+class="math inline">\(g=(g_0,g_1,...,g_U)\)</span>，每个<span
+class="math inline">\(g_i\)</span>维度为K+1（加上了<span
+class="math inline">\(\varnothing\)</span>）。</p></li>
+</ul>
+<h2 id="transcription-network">Transcription Network</h2>
+<ul>
+<li>Transcription Network <span class="math inline">\(F\)</span>
+是一个双向RNN（或LSTM）。</li>
+<li>输入为<span
+class="math inline">\(x\)</span>，也就是MFCC的系数向量序列。</li>
+<li>输出为<span
+class="math inline">\(f\)</span>，同样为K+1维向量的序列（加上了<span
+class="math inline">\(\varnothing\)</span>）。</li>
+</ul>
+<h2 id="output-distribution">Output Distribution</h2>
+<p>我们回顾两个网络的输入输出：</p>
+<ol type="1">
+<li>Transcription Network：输入 <span class="math inline">\(x\)</span>,
+输出<span class="math inline">\(f=(f_1,f_2,...,f_T)\)</span></li>
+<li>Prediction Network：输入 <span
+class="math inline">\(y\)</span>，输出 <span
+class="math inline">\(g=(g_0,g_1,...,g_U)\)</span></li>
+</ol>
+<p>接下来我们整合两个网络。定义: <span
+class="math display">\[h(k,t,u)=e^{f_t^k+g_u^k}\]</span></p>
+<p>其中<span class="math inline">\(1\leq t \leq T\)</span>, <span
+class="math inline">\(0 \leq u \leq U\)</span>，标签 <span
+class="math inline">\(k\in \bar{\mathcal{Y}}\)</span>。<span
+class="math inline">\(k\)</span>作为上标时表示向量的第<span
+class="math inline">\(k\)</span>个元素。</p>
+<p>归一化： <span class="math display">\[\Pr(k \in \bar {\mathcal{Y}} |
+t,u)=\frac{h(k,t,u)}{\sum_{k&#39;\in
+\mathcal{Y}}h(k&#39;,t,u)}\]</span></p>
+<p>这个式子代表着：在<span class="math inline">\(f\)</span>输出到<span
+class="math inline">\(t\)</span>，<span
+class="math inline">\(g\)</span>输出到<span
+class="math inline">\(u\)</span>时，预测为<span
+class="math inline">\(k\)</span>的概率。而<span
+class="math inline">\(f_t^k\)</span>和<span
+class="math inline">\(g_u^k\)</span>可以直接相加的底气在于，他们都代表着同一意义的概率。</p>
+<blockquote>
+<p>Q：为什么要枚举<span class="math inline">\(t\)</span>和<span
+class="math inline">\(u\)</span>呢？他们不应该都等于<span
+class="math inline">\(k\)</span>吗？</p>
+</blockquote>
+<blockquote>
+<p>A：因为存在<span
+class="math inline">\(\varnothing\)</span>，所以在同一个位置上，<span
+class="math inline">\(f\)</span>和<span
+class="math inline">\(g\)</span>并不一定进行到了同一个字符，所以需要枚举所有<span
+class="math inline">\(t\)</span>和<span
+class="math inline">\(u\)</span>。</p>
+</blockquote>
+<blockquote>
+<p>实际上，由于<span class="math inline">\(g\)</span>的输入是<span
+class="math inline">\(y\)</span>，它除了第一个字符是<span
+class="math inline">\(\varnothing\)</span>，后面的都是字符，而<span
+class="math inline">\(f\)</span>却可能出现很多<span
+class="math inline">\(\varnothing\)</span>，因此他们大概率是对不齐的。</p>
+</blockquote>
+<p>现在我们对比我们的目标式子：</p>
+<p><span class="math display">\[\Pr(a \in \bar {\mathcal{Y}}^* |
+x)\]</span></p>
+<p>我们还剩最后一步：对<span class="math inline">\(t\)</span>和<span
+class="math inline">\(u\)</span>进行累计，求出联合概率分布。</p>
+<p>为了方便推导，我们定义两个记号：</p>
+<p><span class="math display">\[
+y(t,u) \equiv \Pr(y_{u+1} | t, u)
+\]</span> <span class="math display">\[
+\varnothing(t, u) \equiv \Pr(\varnothing | t, u)
+\]</span> 他们表示在<span
+class="math inline">\((t,u)\)</span>这个节点上，预测出的为答案为字符或者<span
+class="math inline">\(\varnothing\)</span>的概率。</p>
+<h2 id="forward-backward-算法">Forward-Backward 算法</h2>
+<p>这个算法告诉我们</p>
+<h3 id="forward算法">Forward算法</h3>
+<p>定义前向变量 <span class="math inline">\(\alpha(t, u)\)</span> 为在
+<span class="math inline">\(f[1:t]\)</span> 中输出 <span
+class="math inline">\(y[1:u]\)</span>的概率。所有 <span
+class="math inline">\(1 \leq t \leq T\)</span> 和 <span
+class="math inline">\(0 \leq u \leq U\)</span>
+的前向变量可以通过递归计算：</p>
+<p><span class="math display">\[
+\alpha(t, u) = \alpha(t - 1, u) \varnothing(t - 1, u) + \alpha(t, u - 1)
+y(t, u - 1)  
+\]</span></p>
+<p>初始条件为：<span class="math inline">\(\alpha(1, 0) = 1\)</span></p>
+<p>这个式子的意思是：在<span class="math inline">\(f[1:t]\)</span>中输出
+<span class="math inline">\(y[1:u]\)</span>的概率，等于在<span
+class="math inline">\(f[1:t-1]\)</span>中输出 <span
+class="math inline">\(y[1:u]\)</span>的概率乘上在<span
+class="math inline">\((t,u)\)</span>这个位置生成 <span
+class="math inline">\(\varnothing\)</span> 的概率，加上在<span
+class="math inline">\(f[1:t]\)</span>中输出 <span
+class="math inline">\(y[1:u-1]\)</span>的概率乘上在<span
+class="math inline">\((t,u)\)</span>这个位置生成字符的概率。</p>
+<p>可以形象的表示为下图：
+<img src="/images/RNN-T-forward.png" srcset="/img/loading.gif" lazyload alt="RNN-T的Forward示例" width="400"></p>
+<p>其中，底部的黑色节点表示在没有输出任何内容之前的空状态。</p>
+<h2 id="backward算法">Backward算法</h2>
+<p>类似的，我们可以定义后向变量 <span class="math inline">\(\beta(t,
+u)\)</span> 为在 <span class="math inline">\(f[t:T]\)</span> 中输出
+<span class="math inline">\(y[u+1:U]\)</span> 的概率。</p>
+<p><span class="math display">\[ \beta(t, u) = \beta(t + 1, u)
+\varnothing(t, u) + \beta(t, u + 1) y(t, u)  \]</span></p>
+<p>初始条件为：<span class="math inline">\(\beta (T,U) = \varnothing
+(T,U)\)</span></p>
+<h2 id="loss-函数">Loss 函数</h2>
+<p>至此，我们终于可以求出</p>
+<p><span class="math display">\[\Pr(a \in \bar {\mathcal{Y}}^* | x) =
+\sum_{(t, u): t + u = n} \alpha(t, u) \beta(t, u) \]</span></p>
+<p>也就是左上到右下对角线上<span class="math inline">\(\alpha(t, u)
+\beta(t, u)\)</span> 的总和。</p>
+<p>于是Loss函数就是： <span class="math display">\[
+L = - \ln Pr(y^* | x)
+\]</span></p>
 
                 
               </div>
@@ -333,8 +502,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>BPE 论文阅读</div>
-      <div>http://example.com/2025/03/03/BPE-论文阅读/</div>
+      <div>RNN-T 论文阅读</div>
+      <div>http://example.com/2025/03/05/RNN-T-论文阅读/</div>
     </div>
     <div class="license-meta">
       
@@ -346,7 +515,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年3月3日</div>
+          <div>2025年3月5日</div>
         </div>
       
       
@@ -378,18 +547,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/05/Pruned-RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="Pruned RNN-T 论文阅读">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Pruned RNN-T 论文阅读</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/03/RNN-Transducer-with-stateless-prediction-network-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="RNN-Transducer with stateless prediction network 论文阅读">
-                        <span class="hidden-mobile">RNN-Transducer with stateless prediction network 论文阅读</span>
+                      <a href="/2025/03/05/Pruned-RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="Pruned RNN-T 论文阅读">
+                        <span class="hidden-mobile">Pruned RNN-T 论文阅读</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
