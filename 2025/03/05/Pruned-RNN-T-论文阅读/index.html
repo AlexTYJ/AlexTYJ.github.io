@@ -19,18 +19,20 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="RNN-T 的缺点  损失函数计算相对较慢 占用较多内存  RNN-T占用较多内存">
+    <meta name="description" content="RNN-T 的缺点  损失函数计算相对较慢 占用较多内存  RNN-T模型需要储存一个4维的张量，维度是 \((N, T, U, C)\), 其中\(N\)是batch_size，\(T\)是Transcription Network的输出长度，\(U\)是Prediction的输出长度，\(V\)是词表大小。 本文将\(U\)限制为 \(S\subseteq U\)，从而加速训练。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Pruned RNN-T 论文阅读">
 <meta property="og:url" content="http://example.com/2025/03/05/Pruned-RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="RNN-T 的缺点  损失函数计算相对较慢 占用较多内存  RNN-T占用较多内存">
+<meta property="og:description" content="RNN-T 的缺点  损失函数计算相对较慢 占用较多内存  RNN-T模型需要储存一个4维的张量，维度是 \((N, T, U, C)\), 其中\(N\)是batch_size，\(T\)是Transcription Network的输出长度，\(U\)是Prediction的输出长度，\(V\)是词表大小。 本文将\(U\)限制为 \(S\subseteq U\)，从而加速训练。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/pruned-RNN-T.png">
 <meta property="article:published_time" content="2025-03-06T02:55:48.000Z">
-<meta property="article:modified_time" content="2025-03-06T03:58:18.505Z">
+<meta property="article:modified_time" content="2025-03-07T02:45:32.455Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/pruned-RNN-T.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -250,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          28 字
+          722 字
         
       </span>
     
@@ -261,7 +263,7 @@
         
         
         
-          1 分钟
+          7 分钟
         
       </span>
     
@@ -308,7 +310,110 @@
 <li>损失函数计算相对较慢</li>
 <li>占用较多内存</li>
 </ol>
-<h2 id="rnn-t占用较多内存">RNN-T占用较多内存</h2>
+<p>RNN-T模型需要储存一个4维的张量，维度是 <span
+class="math inline">\((N, T, U, C)\)</span>, 其中<span
+class="math inline">\(N\)</span>是batch_size，<span
+class="math inline">\(T\)</span>是Transcription Network的输出长度，<span
+class="math inline">\(U\)</span>是Prediction的输出长度，<span
+class="math inline">\(V\)</span>是词表大小。</p>
+<p>本文将<span class="math inline">\(U\)</span>限制为 <span
+class="math inline">\(S\subseteq U\)</span>，从而加速训练。</p>
+<h1 id="基本思想">基本思想</h1>
+<p>仅计算对最终损失有重要贡献的 <span
+class="math inline">\((t,u)\)</span> 对应项的joiner
+network，从而减少计算量。</p>
+<p>具体来说，我们执行两次递推：</p>
+<ol type="1">
+<li>使用一个trivial的joiner
+network，该网络计算速度非常快。利用初步计算结果：确定哪些索引对损失贡献较大。</li>
+<li>第二次计算：仅对筛选出的 <span
+class="math inline">\((t,u)\)</span>子集来计算的joiner network。</li>
+</ol>
+<h2 id="trivial-joiner-network">Trivial Joiner Network</h2>
+<p>Trivial Joiner Network的思路为：</p>
+<p>直接对encoder embedding和decoder
+embedding进行投影，得到未归一化的对数概率：</p>
+<p><span class="math display">\[
+L_{\text{enc}}(t, v)
+\]</span></p>
+<p><span class="math display">\[
+L_{\text{dec}}(u, v)
+\]</span></p>
+<p>那么最终的loss就是：</p>
+<p><span class="math display">\[L_{\text{trivial}}(t, u, v) \coloneqq
+L_{\text{enc}}(t, v) + L_{\text{dec}}(u, v) - L_{\text{normalizer}}(t,
+u)\]</span></p>
+<p>其中</p>
+<p><span class="math display">\[
+L_{\text{normalizer}}(t, u) \coloneqq \log \sum_{v} \exp \left(
+L_{\text{enc}}(t, v) + L_{\text{dec}}(u, v) \right)
+\]</span></p>
+<p>这个公式本质上是log-space的矩阵乘法，容易实现。</p>
+<h2 id="pruning-bounds">Pruning Bounds</h2>
+<p>引入常数<span class="math inline">\(S\)</span>，表示对于任意的<span
+class="math inline">\(t\)</span>，我们将仅计算考虑 <span
+class="math inline">\(L(t, u, v)\)</span> 在<span
+class="math inline">\(p_t \leq u &lt; p_t + S\)</span> 位置上的值。其中
+<span class="math inline">\(p_t\)</span> 是通过Trivial Joiner
+Network得到的。</p>
+<p>剪枝就是将 <span class="math inline">\(u &lt; p_t\)</span> 或 <span
+class="math inline">\(u \geq p_t + S\)</span> 的 <span
+class="math inline">\(P(t, u, \cdot)\)</span> 视为 <span
+class="math inline">\(-\infty\)</span>。</p>
+<p>理想情况下，我们希望找到一组整数剪枝边界 <span
+class="math inline">\(p = p_0, p_t, \dots,
+p_{T-1}\)</span>，该组边界能够最大化Trivial Joiner
+Network的总保留概率。换句话说，我们要最大化数据的似然性。</p>
+<p>为了简化问题，我们通过为每个帧 <span class="math inline">\(t\)</span>
+找到局部最优的剪枝边界来解决，然后应用一些连续性约束来改进结果。</p>
+<p>具体来说，就是求解下面这个公式：</p>
+<p><span class="math display">\[p_t = \arg\max_{p=0}^{U-S+1} \left( -
+y&#39;_0(t, p-1) + \sum_{u=p}^{p+S-1} \varnothing&#39;_0(t, u)
+\right)\]</span></p>
+<p>其中 <span class="math inline">\(y&#39;_0(t, u)\)</span> 和 <span
+class="math inline">\(\varnothing&#39;_0(t, u)\)</span> 是 <span
+class="math inline">\(L_{tot}\)</span> 关于<span
+class="math inline">\(y(t, u)\)</span> 和<span
+class="math inline">\(\varnothing(t, u)\)</span>.的导数。</p>
+<p>这个公式可以形象的理解为下图中绿线减去红线的值。</p>
+<p><img src="/images/pruned-RNN-T.png" srcset="/img/loading.gif" lazyload alt="Pruned-RNN-T" width="400"></p>
+<p>为什么要减去红线呢？</p>
+<p>当然还需要满足一些条件（连续性等）：</p>
+<p><span class="math display">\[
+0 \leq p_t \leq U - S + 1
+\]</span></p>
+<p><span class="math display">\[
+p_t \leq p_{t+1}
+\]</span></p>
+<p><span class="math display">\[
+p_{t+1} - p_t \leq S
+\]</span></p>
+<h2 id="loss-function">Loss function</h2>
+<p><span class="math display">\[
+L_{\text{smoothed}}(t, u, v)
+\]</span></p>
+<p><span class="math display">\[
+= (1 - \alpha_{\text{lm}} - \alpha_{\text{acoustic}}) \cdot
+L_{\text{trivial}}(t, u, v) + \alpha_{\text{lm}} \cdot L_{\text{lm}}(t,
+u, v) + \alpha_{\text{acoustic}} \cdot L_{\text{acoustic}}(t, u, v)
+\]</span></p>
+<p>其中：</p>
+<p><span class="math display">\[
+L_{\text{trivial}}(t, u, v) = \text{LogSoftmax}_v \left(
+L_{\text{enc}}(t, v) + L_{\text{dec}}(u, v) \right)  
+\]</span></p>
+<p><span class="math display">\[
+L_{\text{acoustic}}(t, u, v) = \text{LogSoftmax}_v \left(
+L_{\text{enc}}(t, v) + L_{\text{avg-dec}}(u, v) \right)  
+\]</span></p>
+<p><span class="math display">\[
+L_{\text{lm}}(t, u, v) = \text{LogSoftmax}_v (L_{\text{dec}}(u, v))
+\]</span></p>
+<p><span class="math display">\[
+L_{\text{avg-dec}}(u, v) = \log \left( \frac{1}{U + 1} \right)
+\sum_{u=0}^{X} \text{Softmax}_v L_{\text{dec}}(u, v)  
+\]</span></p>
+<p>为什么归一化这么操作？</p>
 
                 
               </div>

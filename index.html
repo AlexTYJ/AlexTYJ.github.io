@@ -302,7 +302,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/03/05/Pruned-RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" target="_self">
         <div>
-          RNN-T 的缺点  损失函数计算相对较慢 占用较多内存  RNN-T占用较多内存
+          RNN-T 的缺点  损失函数计算相对较慢 占用较多内存  RNN-T模型需要储存一个4维的张量，维度是 \((N, T, U, C)\), 其中\(N\)是batch_size，\(T\)是Transcription Network的输出长度，\(U\)是Prediction的输出长度，\(V\)是词表大小。 本文将\(U\)限制为 \(S\subseteq U\)，从而加速训练。
         </div>
       </a>
 
