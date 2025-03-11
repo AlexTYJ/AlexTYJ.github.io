@@ -19,18 +19,20 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="概述 和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent representation上进行预测。文章认为所有模态在latent representation上都是一些稠密向量，所以训练的方法相同。 模型细节 所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student model，只在mask的地方产生输出。一份不mas">
+    <meta name="description" content="概述 和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent representation上进行预测。文章认为所有模态在latent representation上都是一些稠密向量，所以训练的方法相同。 模型细节  所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student model，只在mask的地方产生输出。一份不m">
 <meta property="og:type" content="article">
 <meta property="og:title" content="data2vec 论文阅读">
 <meta property="og:url" content="http://example.com/2025/03/10/data2vec-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="概述 和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent representation上进行预测。文章认为所有模态在latent representation上都是一些稠密向量，所以训练的方法相同。 模型细节 所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student model，只在mask的地方产生输出。一份不mas">
+<meta property="og:description" content="概述 和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent representation上进行预测。文章认为所有模态在latent representation上都是一些稠密向量，所以训练的方法相同。 模型细节  所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student model，只在mask的地方产生输出。一份不m">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/images/data2vec.png">
 <meta property="article:published_time" content="2025-03-11T05:37:35.000Z">
-<meta property="article:modified_time" content="2025-03-11T06:01:13.281Z">
+<meta property="article:modified_time" content="2025-03-11T06:04:47.421Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/data2vec.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -308,6 +310,7 @@
 representation上进行预测。文章认为所有模态在latent
 representation上都是一些稠密向量，所以训练的方法相同。</p>
 <h1 id="模型细节">模型细节</h1>
+<p><img src="/images/data2vec.png" srcset="/img/loading.gif" lazyload alt="data2vec" width="400"></p>
 <p>所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student
 model，只在mask的地方产生输出。一份不mask，给teacher
 model直接学习上下文表示，然后让两者的输出对齐。</p>
