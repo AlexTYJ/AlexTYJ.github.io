@@ -27,7 +27,7 @@
 <meta property="og:description" content="概述 为了把无监督和有监督统一成一次训练。 定义 upper-level problem 是 unsupervised的， lower-level problem 是supervised。 问题详细定义 1. 目标优化问题 \[ \min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}} \ell_{\text{sup}}((x, y)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-18T06:47:48.000Z">
-<meta property="article:modified_time" content="2025-03-18T06:55:12.851Z">
+<meta property="article:modified_time" content="2025-03-18T06:57:54.441Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
@@ -250,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          273 字
+          529 字
         
       </span>
     
@@ -261,7 +261,7 @@
         
         
         
-          3 分钟
+          5 分钟
         
       </span>
     
@@ -351,6 +351,54 @@ f(\theta, \phi) + \gamma p(\theta, \eta)  \tag{9}
 \| \nabla g(\theta, \eta) \|^2 \geq \mu  \tag{10}
 \]</span></p>
 <p>这就是我们的优化目标。</p>
+<h2 id="伪代码">伪代码</h2>
+<h3 id="输入参数">输入参数：</h3>
+<ul>
+<li><strong>(x, y)</strong>：标注数据，其中 <code>x</code>
+是输入特征，<code>y</code> 是对应的标签。</li>
+<li><strong>x</strong>：未标注数据，只有特征没有标签。</li>
+<li><strong>ρ</strong>：自监督训练的学习率。</li>
+<li><strong>α</strong>：双层梯度下降（Bilevel Gradient
+Descent）的学习率。</li>
+<li><strong>τ</strong>：监督微调阶段的学习率。</li>
+<li><strong>γm</strong>：最大惩罚因子。</li>
+<li><strong>K</strong>：总训练轮数。</li>
+<li><strong>N1</strong>：在自监督训练阶段的迭代次数。</li>
+<li><strong>N2</strong>：联合自监督和监督训练的迭代次数。</li>
+<li><strong>N3</strong>：监督微调的迭代次数。</li>
+<li><strong>Lunsup</strong>：下层无监督经验风险函数
+<code>g(θ, η)</code>。</li>
+<li><strong>Lsup</strong>：上层监督经验风险函数
+<code>f(θ, φ)</code>。</li>
+</ul>
+<h3 id="伪代码-1">伪代码：</h3>
+<p>```python Algorithm 1 Bilevel Joint Unsupervised and Supervised
+Training (BL-JUST)</p>
+<p>Input: labeled data (x, y), unlabeled data x ρ ← learning rate for
+self-supervised exploration α ← learning rate for bilevel gradient
+descent τ ← learning rate for supervised fine-tuning γm ← maximum
+penalty factor K ← number of epochs N1 ← number of iterations in
+unsupervised training N2 ← number of iterations in joint unsupervised
+and supervised training; N3 ← number of iterations for supervised
+fine-tuning Lunsup ← lower level unsupervised empirical risk g(θ, η)
+Lsup ← upper level supervised empirical risk f(θ, φ)</p>
+<p>for k = 1 : K do # Self-supervised exploration for i = 1 : N1 do
+(θi_k+1, ηi_k+1) = (θi_k, ηi_k) − ρ∇θ,ηLunsup(θi_k, ηi_k)</p>
+<pre><code class="hljs"># Joint unsupervised and supervised training
+γk = (k − 1) γm / K
+Use θN_k1+1 and ηN_k1+1 as the starting point
+for j = 1 : N2 do
+    # Update θ
+    θj_k+1 = θj_k − α∇θLsup(θj_k, φk_j) − αγk∇θLunsup(θj_k, ηj_k)
+    # Update φ
+    φk_j+1 = φk_j − α∇φLsup(θj_k, φk_j)
+    # Update η
+    ηj_k+1 = ηj_k − αγ∇ηLunsup(θj_k, ηj_k)
+
+# Supervised fine-tuning
+Use θN_K2+1 and φK_N2+1 as the starting point
+for t = 1 : N3 do
+    (θt+1, φt+1) = (θt, φt) − τ∇θ,φLsup(θt, φt)</code></pre>
 
                 
               </div>
