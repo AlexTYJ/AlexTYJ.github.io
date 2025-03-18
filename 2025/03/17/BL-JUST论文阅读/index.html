@@ -19,26 +19,24 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="概述 和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent representation上进行预测。文章认为所有模态在latent representation上都是一些稠密向量，所以训练的方法相同。 模型细节  所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student model，只在mask的地方产生输出。一份不m">
+    <meta name="description" content="概述 为了把无监督和有监督统一成一次训练。 定义 upper-level problem 是 unsupervised的， lower-level problem 是supervised。 问题详细定义 1. 目标优化问题 \[ \min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}} \ell_{\text{sup}}((x, y)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="data2vec 论文阅读">
-<meta property="og:url" content="http://example.com/2025/03/10/data2vec-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
+<meta property="og:title" content="BL-JUST">
+<meta property="og:url" content="http://example.com/2025/03/17/BL-JUST%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="概述 和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent representation上进行预测。文章认为所有模态在latent representation上都是一些稠密向量，所以训练的方法相同。 模型细节  所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student model，只在mask的地方产生输出。一份不m">
+<meta property="og:description" content="概述 为了把无监督和有监督统一成一次训练。 定义 upper-level problem 是 unsupervised的， lower-level problem 是supervised。 问题详细定义 1. 目标优化问题 \[ \min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}} \ell_{\text{sup}}((x, y)">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/images/data2vec.png">
-<meta property="article:published_time" content="2025-03-11T05:37:35.000Z">
-<meta property="article:modified_time" content="2025-03-11T06:04:47.421Z">
+<meta property="article:published_time" content="2025-03-18T06:47:48.000Z">
+<meta property="article:modified_time" content="2025-03-18T06:52:11.393Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/images/data2vec.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>data2vec 论文阅读 - Alex&#39;s Blog</title>
+  <title>BL-JUST - Alex&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -229,7 +227,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="data2vec 论文阅读"></span>
+            <span id="subtitle" data-typed-text="BL-JUST"></span>
           
         </div>
 
@@ -240,8 +238,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-10 22:37" pubdate>
-          2025年3月10日 晚上
+        <time datetime="2025-03-17 23:47" pubdate>
+          2025年3月17日 晚上
         </time>
       </span>
     
@@ -252,7 +250,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          293 字
+          273 字
         
       </span>
     
@@ -300,56 +298,59 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">data2vec 论文阅读</h1>
+            <h1 id="seo-header">BL-JUST</h1>
             
             
               <div class="markdown-body">
                 
                 <h1 id="概述">概述</h1>
-<p>和Bert等预训练模型的本质区别在于：Bert在原始文本上mask，而该模型在latent
-representation上进行预测。文章认为所有模态在latent
-representation上都是一些稠密向量，所以训练的方法相同。</p>
-<h1 id="模型细节">模型细节</h1>
-<p><img src="/images/data2vec.png" srcset="/img/loading.gif" lazyload alt="data2vec" width="400"></p>
-<p>所有模态的数据在encoder之后。然后复制两份，一份mask之后通过student
-model，只在mask的地方产生输出。一份不mask，给teacher
-model直接学习上下文表示，然后让两者的输出对齐。</p>
-<h2 id="encoder-细节">Encoder 细节</h2>
-<p>encoder部分并没有将不同模态统一。</p>
-<ul>
-<li>视觉：参考ViT</li>
-<li>语音： 一个多层 1-D 卷积层， 16 kHz waveform to 50 Hz
-representations</li>
-<li>文本：token embedding</li>
-</ul>
-<h2 id="masking-细节">Masking 细节</h2>
-<p>mask也不是统一的。</p>
-<ul>
-<li>视觉：block-wise masking strategy</li>
-<li>语音：mask spans of latent speech representations</li>
-<li>文本：tokens</li>
-</ul>
-<h2 id="student-model-teacher-model细节">student model &amp; teacher
-model细节</h2>
-<p>都是普通Transformer。</p>
-<p>其中，teacher model的参数遵循以下公式：</p>
+<p>为了把无监督和有监督统一成一次训练。</p>
+<p>定义 upper-level problem 是 unsupervised的， lower-level problem
+是supervised。</p>
+<h2 id="问题详细定义">问题详细定义</h2>
+<h3 id="目标优化问题">1. 目标优化问题</h3>
 <p><span class="math display">\[
-\Delta \leftarrow \tau \Delta + (1 - \tau) \theta
+\min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}}
+\ell_{\text{sup}}((x, y); \theta, \phi)  \tag{1}
+\]</span> 使得 <span class="math display">\[
+\theta \in \arg\min_{\theta&#39;, \eta} \sum_{x \in D_{\text{unsup}}}
+\ell_{\text{unsup}}(x; \theta&#39;, \eta)  \tag{2}
 \]</span></p>
-<p>其中 <span class="math inline">\(\Delta\)</span> 是teacher
-model的参数， <span class="math inline">\(\theta\)</span> 是student
-model 的参数。 <span class="math inline">\(\tau\)</span>
-是缓慢增加的。</p>
-<p>学生模型的训练目标是：</p>
+<h3 id="上层和下层目标">2. 上层和下层目标</h3>
 <p><span class="math display">\[
-y_t = \frac{1}{K} \sum_{l=L-K+1}^{L} \hat{a}_{l,t}
+f(\theta, \phi) \triangleq \sum_{(x, y) \in D_{\text{sup}}}
+\ell_{\text{sup}}((x, y); \theta, \phi)  \tag{3}
+\]</span> <span class="math display">\[
+g(\theta, \eta) \triangleq \sum_{x \in D_{\text{unsup}}}
+\ell_{\text{unsup}}(x; \theta, \eta)  \tag{4}
 \]</span></p>
-<p>其中， <span class="math inline">\(\hat{a}_{l,t}\)</span> 是teacher
-model经过归一化的第<span class="math inline">\(l\)</span>个块在时间步
-<span class="math inline">\(t\)</span> 的输出，<span
-class="math inline">\(K\)</span>是前<span
-class="math inline">\(K\)</span>个块的数量，<span
-class="math inline">\(L\)</span>是总块数。</p>
+<h3 id="约束形式的优化问题">3. 约束形式的优化问题</h3>
+<p><span class="math display">\[
+\min_{\theta, \phi} f(\theta, \phi) \quad \text{s.t.} \quad \theta \in
+\arg\min_{\theta&#39;, \eta} g(\theta&#39;, \eta).  \tag{5}
+\]</span></p>
+<h3 id="函数值差距定义">4. 函数值差距定义</h3>
+<p><span class="math display">\[
+p(\theta, \eta) = g(\theta, \eta) - \min_{\theta, \eta} g(\theta, \eta)
+\triangleq g(\theta, \eta) - v  \tag{6}
+\]</span> 其中 <span class="math display">\[
+v \triangleq \min_{\theta, \eta} g(\theta, \eta).  \tag{7}
+\]</span></p>
+<h3 id="重构后的优化问题">5. 重构后的优化问题</h3>
+<p><span class="math display">\[
+\min_{\theta, \phi} f(\theta, \phi) \quad \text{s.t.} \quad p(\theta,
+\eta) \leq 0.  \tag{8}
+\]</span></p>
+<h3 id="基于惩罚的单层重构">6. 基于惩罚的单层重构</h3>
+<p><span class="math display">\[
+\min_{\theta, \phi, \eta} F_{\gamma}(\theta, \phi, \eta) \triangleq
+f(\theta, \phi) + \gamma p(\theta, \eta)  \tag{9}
+\]</span></p>
+<h3 id="计算条件">7. 计算条件</h3>
+<p><span class="math display">\[
+\| \nabla g(\theta, \eta) \|^2 \geq \mu  \tag{10}
+\]</span></p>
+<p>这就是我们的优化目标</p>
 
                 
               </div>
@@ -374,8 +375,8 @@ class="math inline">\(L\)</span>是总块数。</p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>data2vec 论文阅读</div>
-      <div>http://example.com/2025/03/10/data2vec-论文阅读/</div>
+      <div>BL-JUST</div>
+      <div>http://example.com/2025/03/17/BL-JUST论文阅读/</div>
     </div>
     <div class="license-meta">
       
@@ -387,7 +388,7 @@ class="math inline">\(L\)</span>是总块数。</p>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年3月10日</div>
+          <div>2025年3月17日</div>
         </div>
       
       
@@ -419,18 +420,12 @@ class="math inline">\(L\)</span>是总块数。</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/17/BL-JUST%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="BL-JUST">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">BL-JUST</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/05/RNN-T-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="RNN-T 论文阅读">
-                        <span class="hidden-mobile">RNN-T 论文阅读</span>
+                      <a href="/2025/03/10/data2vec-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="data2vec 论文阅读">
+                        <span class="hidden-mobile">data2vec 论文阅读</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
