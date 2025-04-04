@@ -27,7 +27,7 @@
 <meta property="og:description" content="概述 为了把无监督和有监督统一成一次训练。 定义 upper-level problem 是 unsupervised的， lower-level problem 是supervised。 问题详细定义 1. 目标优化问题 \[ \min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}} \ell_{\text{sup}}((x, y)">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-03-18T06:47:48.000Z">
-<meta property="article:modified_time" content="2025-03-18T06:57:54.441Z">
+<meta property="article:modified_time" content="2025-04-04T19:30:43.233Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
@@ -372,33 +372,41 @@ Descent）的学习率。</li>
 <code>f(θ, φ)</code>。</li>
 </ul>
 <h3 id="伪代码-1">伪代码：</h3>
-<p>```python Algorithm 1 Bilevel Joint Unsupervised and Supervised
-Training (BL-JUST)</p>
-<p>Input: labeled data (x, y), unlabeled data x ρ ← learning rate for
-self-supervised exploration α ← learning rate for bilevel gradient
-descent τ ← learning rate for supervised fine-tuning γm ← maximum
-penalty factor K ← number of epochs N1 ← number of iterations in
-unsupervised training N2 ← number of iterations in joint unsupervised
-and supervised training; N3 ← number of iterations for supervised
-fine-tuning Lunsup ← lower level unsupervised empirical risk g(θ, η)
-Lsup ← upper level supervised empirical risk f(θ, φ)</p>
-<p>for k = 1 : K do # Self-supervised exploration for i = 1 : N1 do
-(θi_k+1, ηi_k+1) = (θi_k, ηi_k) − ρ∇θ,ηLunsup(θi_k, ηi_k)</p>
-<pre><code class="hljs"># Joint unsupervised and supervised training
-γk = (k − 1) γm / K
-Use θN_k1+1 and ηN_k1+1 as the starting point
-for j = 1 : N2 do
-    # Update θ
-    θj_k+1 = θj_k − α∇θLsup(θj_k, φk_j) − αγk∇θLunsup(θj_k, ηj_k)
-    # Update φ
-    φk_j+1 = φk_j − α∇φLsup(θj_k, φk_j)
-    # Update η
-    ηj_k+1 = ηj_k − αγ∇ηLunsup(θj_k, ηj_k)
+<p>```python</p>
+<pre><code class="hljs">Algorithm 1 Bilevel Joint Unsupervised and Supervised Training (BL-JUST)
 
-# Supervised fine-tuning
-Use θN_K2+1 and φK_N2+1 as the starting point
-for t = 1 : N3 do
-    (θt+1, φt+1) = (θt, φt) − τ∇θ,φLsup(θt, φt)</code></pre>
+Input: labeled data (x, y), unlabeled data x
+ρ ← learning rate for self-supervised exploration
+α ← learning rate for bilevel gradient descent
+τ ← learning rate for supervised fine-tuning
+γm ← maximum penalty factor
+K ← number of epochs
+N1 ← number of iterations in unsupervised training
+N2 ← number of iterations in joint unsupervised and supervised training;
+N3 ← number of iterations for supervised fine-tuning
+Lunsup ← lower level unsupervised empirical risk g(θ, η)
+Lsup ← upper level supervised empirical risk f(θ, φ)
+
+for k = 1 : K do
+    # Self-supervised exploration
+    for i = 1 : N1 do
+        (θi_k+1, ηi_k+1) = (θi_k, ηi_k) − ρ∇θ,ηLunsup(θi_k, ηi_k)
+
+    # Joint unsupervised and supervised training
+    γk = (k − 1) γm / K
+    Use θN_k1+1 and ηN_k1+1 as the starting point
+    for j = 1 : N2 do
+        # Update θ
+        θj_k+1 = θj_k − α∇θLsup(θj_k, φk_j) − αγk∇θLunsup(θj_k, ηj_k)
+        # Update φ
+        φk_j+1 = φk_j − α∇φLsup(θj_k, φk_j)
+        # Update η
+        ηj_k+1 = ηj_k − αγ∇ηLunsup(θj_k, ηj_k)
+
+    # Supervised fine-tuning
+    Use θN_K2+1 and φK_N2+1 as the starting point
+    for t = 1 : N3 do
+        (θt+1, φt+1) = (θt, φt) − τ∇θ,φLsup(θt, φt)</code></pre>
 
                 
               </div>
