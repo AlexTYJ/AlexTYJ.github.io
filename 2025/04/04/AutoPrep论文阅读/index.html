@@ -19,24 +19,26 @@
   <meta name="author" content="Yujie Tu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="概述 为了把无监督和有监督统一成一次训练。 定义 upper-level problem 是 unsupervised的， lower-level problem 是supervised。 问题详细定义 1. 目标优化问题 \[ \min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}} \ell_{\text{sup}}((x, y)">
+    <meta name="description" content="Pipeline示意图  处理流程 1. Speech enhancement 采用 universal-sample rate 的 USRBSRNN model， 支持8k-48kHz。 此外，还采用了一个 non-streaming 的 BSRNN noise reduction model 由于原始语音过长，非流式BSRNN无法处理，我们将原始语音划分为 12 秒的 windo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BL-JUST">
-<meta property="og:url" content="http://example.com/2025/03/17/BL-JUST%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
+<meta property="og:title" content="AutoPrep论文阅读">
+<meta property="og:url" content="http://example.com/2025/04/04/AutoPrep%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/index.html">
 <meta property="og:site_name" content="Alex&#39;s Blog">
-<meta property="og:description" content="概述 为了把无监督和有监督统一成一次训练。 定义 upper-level problem 是 unsupervised的， lower-level problem 是supervised。 问题详细定义 1. 目标优化问题 \[ \min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}} \ell_{\text{sup}}((x, y)">
+<meta property="og:description" content="Pipeline示意图  处理流程 1. Speech enhancement 采用 universal-sample rate 的 USRBSRNN model， 支持8k-48kHz。 此外，还采用了一个 non-streaming 的 BSRNN noise reduction model 由于原始语音过长，非流式BSRNN无法处理，我们将原始语音划分为 12 秒的 windo">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-03-18T06:47:48.000Z">
-<meta property="article:modified_time" content="2025-04-04T19:30:43.233Z">
+<meta property="og:image" content="http://example.com/images/autoprep.png">
+<meta property="article:published_time" content="2025-04-04T19:33:05.000Z">
+<meta property="article:modified_time" content="2025-04-04T23:48:07.030Z">
 <meta property="article:author" content="Yujie Tu">
 <meta property="article:tag" content="语音技术">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/images/autoprep.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>BL-JUST - Alex&#39;s Blog</title>
+  <title>AutoPrep论文阅读 - Alex&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -227,7 +229,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="BL-JUST"></span>
+            <span id="subtitle" data-typed-text="AutoPrep论文阅读"></span>
           
         </div>
 
@@ -238,8 +240,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-17 23:47" pubdate>
-          2025年3月17日 晚上
+        <time datetime="2025-04-04 12:33" pubdate>
+          2025年4月4日 下午
         </time>
       </span>
     
@@ -250,7 +252,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          529 字
+          732 字
         
       </span>
     
@@ -261,7 +263,7 @@
         
         
         
-          5 分钟
+          7 分钟
         
       </span>
     
@@ -298,115 +300,67 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">BL-JUST</h1>
+            <h1 id="seo-header">AutoPrep论文阅读</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="概述">概述</h1>
-<p>为了把无监督和有监督统一成一次训练。</p>
-<p>定义 upper-level problem 是 unsupervised的， lower-level problem
-是supervised。</p>
-<h2 id="问题详细定义">问题详细定义</h2>
-<h3 id="目标优化问题">1. 目标优化问题</h3>
-<p><span class="math display">\[
-\min_{\theta, \phi} \sum_{(x, y) \in D_{\text{sup}}}
-\ell_{\text{sup}}((x, y); \theta, \phi)  \tag{1}
-\]</span> 使得 <span class="math display">\[
-\theta \in \arg\min_{\theta&#39;, \eta} \sum_{x \in D_{\text{unsup}}}
-\ell_{\text{unsup}}(x; \theta&#39;, \eta)  \tag{2}
-\]</span></p>
-<h3 id="上层和下层目标">2. 上层和下层目标</h3>
-<p><span class="math display">\[
-f(\theta, \phi) \triangleq \sum_{(x, y) \in D_{\text{sup}}}
-\ell_{\text{sup}}((x, y); \theta, \phi)  \tag{3}
-\]</span> <span class="math display">\[
-g(\theta, \eta) \triangleq \sum_{x \in D_{\text{unsup}}}
-\ell_{\text{unsup}}(x; \theta, \eta)  \tag{4}
-\]</span></p>
-<h3 id="约束形式的优化问题">3. 约束形式的优化问题</h3>
-<p><span class="math display">\[
-\min_{\theta, \phi} f(\theta, \phi) \quad \text{s.t.} \quad \theta \in
-\arg\min_{\theta&#39;, \eta} g(\theta&#39;, \eta).  \tag{5}
-\]</span></p>
-<h3 id="函数值差距定义">4. 函数值差距定义</h3>
-<p><span class="math display">\[
-p(\theta, \eta) = g(\theta, \eta) - \min_{\theta, \eta} g(\theta, \eta)
-\triangleq g(\theta, \eta) - v  \tag{6}
-\]</span> 其中 <span class="math display">\[
-v \triangleq \min_{\theta, \eta} g(\theta, \eta).  \tag{7}
-\]</span></p>
-<h3 id="重构后的优化问题">5. 重构后的优化问题</h3>
-<p><span class="math display">\[
-\min_{\theta, \phi} f(\theta, \phi) \quad \text{s.t.} \quad p(\theta,
-\eta) \leq 0.  \tag{8}
-\]</span></p>
-<h3 id="基于惩罚的单层重构">6. 基于惩罚的单层重构</h3>
-<p><span class="math display">\[
-\min_{\theta, \phi, \eta} F_{\gamma}(\theta, \phi, \eta) \triangleq
-f(\theta, \phi) + \gamma p(\theta, \eta)  \tag{9}
-\]</span></p>
-<h3 id="计算条件">7. 计算条件</h3>
-<p><span class="math display">\[
-\| \nabla g(\theta, \eta) \|^2 \geq \mu  \tag{10}
-\]</span></p>
-<p>这就是我们的优化目标。</p>
-<h2 id="伪代码">伪代码</h2>
-<h3 id="输入参数">输入参数：</h3>
+                <h1 id="pipeline示意图">Pipeline示意图</h1>
+<p><img src="/images/autoprep.png" srcset="/img/loading.gif" lazyload alt="pipeline示意图" width="500"></p>
+<h1 id="处理流程">处理流程</h1>
+<h2 id="speech-enhancement">1. Speech enhancement</h2>
+<p>采用 universal-sample rate 的 USRBSRNN model， 支持8k-48kHz。</p>
+<p>此外，还采用了一个 non-streaming 的 BSRNN noise reduction model</p>
+<p>由于原始语音过长，非流式BSRNN无法处理，我们将原始语音划分为 12 秒的
+window length，并采用 4 秒的步长。然后使用 BSRNN
+模型处理每个语音块，并提取输出音频的中间 4
+秒作为分块输出。最后L，我们将所有分块输出拼接，以生成增强后的语音数据。</p>
+<h2 id="speech-segmentation">2. Speech segmentation</h2>
+<p>采用一种 time-delay neural network (TDNN)-based 的 voice active
+detection (VAD) model。</p>
 <ul>
-<li><strong>(x, y)</strong>：标注数据，其中 <code>x</code>
-是输入特征，<code>y</code> 是对应的标签。</li>
-<li><strong>x</strong>：未标注数据，只有特征没有标签。</li>
-<li><strong>ρ</strong>：自监督训练的学习率。</li>
-<li><strong>α</strong>：双层梯度下降（Bilevel Gradient
-Descent）的学习率。</li>
-<li><strong>τ</strong>：监督微调阶段的学习率。</li>
-<li><strong>γm</strong>：最大惩罚因子。</li>
-<li><strong>K</strong>：总训练轮数。</li>
-<li><strong>N1</strong>：在自监督训练阶段的迭代次数。</li>
-<li><strong>N2</strong>：联合自监督和监督训练的迭代次数。</li>
-<li><strong>N3</strong>：监督微调的迭代次数。</li>
-<li><strong>Lunsup</strong>：下层无监督经验风险函数
-<code>g(θ, η)</code>。</li>
-<li><strong>Lsup</strong>：上层监督经验风险函数
-<code>f(θ, φ)</code>。</li>
+<li><p>为了避免截断连续语音内容，我们仅在连续静音片段超过 1
+秒时进行分割，并在每个语音片段前后各保留 0.4 秒的音频。</p></li>
+<li><p>为了避免语音片段过短（小于 1.5 秒），我们在 VAD
+结果中将中间的短片段进行合并，直到累计音频长度超过 1.5
+秒后再执行分割操作。</p></li>
+<li><p>为防止语音片段过长（超过 30 秒），当片段长度超过 30
+秒时，我们在第一个静音帧处进行分割；若片段长度超过 40
+秒，则直接截断音频。</p></li>
 </ul>
-<h3 id="伪代码-1">伪代码：</h3>
-<p>```python</p>
-<pre><code class="hljs">Algorithm 1 Bilevel Joint Unsupervised and Supervised Training (BL-JUST)
-
-Input: labeled data (x, y), unlabeled data x
-ρ ← learning rate for self-supervised exploration
-α ← learning rate for bilevel gradient descent
-τ ← learning rate for supervised fine-tuning
-γm ← maximum penalty factor
-K ← number of epochs
-N1 ← number of iterations in unsupervised training
-N2 ← number of iterations in joint unsupervised and supervised training;
-N3 ← number of iterations for supervised fine-tuning
-Lunsup ← lower level unsupervised empirical risk g(θ, η)
-Lsup ← upper level supervised empirical risk f(θ, φ)
-
-for k = 1 : K do
-    # Self-supervised exploration
-    for i = 1 : N1 do
-        (θi_k+1, ηi_k+1) = (θi_k, ηi_k) − ρ∇θ,ηLunsup(θi_k, ηi_k)
-
-    # Joint unsupervised and supervised training
-    γk = (k − 1) γm / K
-    Use θN_k1+1 and ηN_k1+1 as the starting point
-    for j = 1 : N2 do
-        # Update θ
-        θj_k+1 = θj_k − α∇θLsup(θj_k, φk_j) − αγk∇θLunsup(θj_k, ηj_k)
-        # Update φ
-        φk_j+1 = φk_j − α∇φLsup(θj_k, φk_j)
-        # Update η
-        ηj_k+1 = ηj_k − αγ∇ηLunsup(θj_k, ηj_k)
-
-    # Supervised fine-tuning
-    Use θN_K2+1 and φK_N2+1 as the starting point
-    for t = 1 : N3 do
-        (θt+1, φt+1) = (θt, φt) − τ∇θ,φLsup(θt, φt)</code></pre>
+<h2 id="speaker-clustering">3. Speaker Clustering</h2>
+<p>采用 spectral clustering。</p>
+<p>具体而言，分为三步：</p>
+<ol type="1">
+<li><p>采用 Wespeaker 中的 ResNet293 speaker embedding model
+计算每个片段的 speaker embeddings。</p></li>
+<li><p>基于余弦相似度构建这些嵌入向量的相似度矩阵，并计算归一化的拉普拉斯矩阵，通过识别该矩阵特征值序列中一阶导数最大的索引，来确定说话人数量。</p></li>
+<li><p>使用标准的 K-Means
+算法获取聚类中心及其分配结果。为避免同一人被错误地分配到不同的聚类中，我们进一步合并余弦相似度大于
+0.75
+的聚类中心。最终，我们根据说话人嵌入所属的聚类将说话人标签分配给每个片段。</p></li>
+</ol>
+<p>注：</p>
+<ul>
+<li><p>对于那些说话人嵌入被分配到不同聚类的语音片段，我们不会为其分配任何说话人标签。</p></li>
+<li><p>AutoPrep 中的说话人聚类仅在数量有限的长语音片段中执行。</p></li>
+<li><p>通常，我们限制每次聚类操作处理的总音频时长不超过 2
+小时。</p></li>
+</ul>
+<h2 id="target-speech-extraction">4. Target speech extraction</h2>
+<p>使用BSRNN（pBSRNN）模型，对每个片段进行目标语音提取，并将每个说话人的cluster
+center作为enrolled speaker embedding。</p>
+<h2 id="quality-filtering">5. Quality filtering</h2>
+<ul>
+<li><p>为了减少说话人分配不准确的问题，我们首先丢弃与各说话人聚类中心相似度低于
+0.5 的片段。</p></li>
+<li><p>为避免单个聚类中存在多位说话人的情况，我们还会丢弃那些与聚类中心的平均相似度低于
+0.55 且最大相似度低于 0.6 的聚类。</p></li>
+</ul>
+<h2 id="speech-recognition">6. Speech recognition</h2>
+<p>我们使用一个基于 Conformer 架构的neural transducer ASR
+系统，transcribe 每个语音片段，生成文本标注。该 ASR 系统基于约 6
+万小时的多语种语音数据训练而成。</p>
 
                 
               </div>
@@ -431,8 +385,8 @@ for k = 1 : K do
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>BL-JUST</div>
-      <div>http://example.com/2025/03/17/BL-JUST论文阅读/</div>
+      <div>AutoPrep论文阅读</div>
+      <div>http://example.com/2025/04/04/AutoPrep论文阅读/</div>
     </div>
     <div class="license-meta">
       
@@ -444,7 +398,7 @@ for k = 1 : K do
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年3月17日</div>
+          <div>2025年4月4日</div>
         </div>
       
       
@@ -476,9 +430,9 @@ for k = 1 : K do
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/04/04/AutoPrep%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="AutoPrep论文阅读">
+                      <a href="/2025/04/04/WenetSpeech4TTS%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="WenetSpeech4TTS论文阅读">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">AutoPrep论文阅读</span>
+                        <span class="hidden-mobile">WenetSpeech4TTS论文阅读</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -486,8 +440,8 @@ for k = 1 : K do
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/10/data2vec-%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="data2vec 论文阅读">
-                        <span class="hidden-mobile">data2vec 论文阅读</span>
+                      <a href="/2025/03/17/BL-JUST%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/" title="BL-JUST">
+                        <span class="hidden-mobile">BL-JUST</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -4,6 +4,63 @@
   
   
   <entry>
+    <title>Emilia</title>
+    <link href="/2025/04/04/Emilia/"/>
+    <url>/2025/04/04/Emilia/</url>
+    
+    <content type="html"><![CDATA[<h1 id="emilia-pipeline">Emilia Pipeline</h1><h2 id="standardization">1. Standardization</h2><p>将原始语音数据统一格式，包括：</p><ul><li><p>转换为WAV格式</p></li><li><p>设置为单声道</p></li><li><p>重采样至24 kHz</p></li><li><p>设置样本宽度为16位，调整目标分贝级别为-20 dBFS</p></li><li><p>标准化波形，确保值在-1到1之间，避免失真。</p></li></ul><h2 id="source-separation">2. Source Separation</h2><p>从原始语音数据中提取清晰的人声，去除背景音乐或噪声。使用UltimateVocal Remover及其预训练模型UVR-MDX-Net Inst 3进行源分离。</p><h2 id="speaker-diarization">3. Speaker Diarization</h2><p>将长语音数据按说话人分割成多个片段，确保每个片段仅包含一个说话人。使用pyannote/speaker-diarization-3.1管道，完成说话人分割、嵌入和聚类。</p><h2 id="fine-grained-segmentation-by-vad">4. Fine-grained Segmentationby VAD</h2><p>进一步细分超过30秒的语音片段，确保每个语句在3到30秒之间。使用Silero-VAD模型对片段进行切分，并将连续片段合并为适当大小的语句。</p><h2 id="asr">5. ASR</h2><p>对分段的语音数据进行转录，使用最先进的多语言ASR模型Whisper-Medium。为了提高效率，采用WhisperX，其速度是官方Whisper的四倍，同时保持相似的准确性。</p><h2 id="filtering">6. Filtering</h2><p>进行质量过滤，确保数据集的质量。过滤标准包括：</p><p>语言识别：丢弃非目标语言的语音数据，或语言置信度低于80%的数据</p><p>语音质量评估：使用DNSMOS P.835OVRL分数，仅保留分数高于3.0的语音数据</p><p>异常值过滤：根据音节时长的四分位范围剔除异常片段。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>WenetSpeech4TTS论文阅读</title>
+    <link href="/2025/04/04/WenetSpeech4TTS%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/04/04/WenetSpeech4TTS%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="pipeline">Pipeline</h1><h2 id="adjacent-segments-merging">1. Adjacent Segments Merging：</h2><p>为了处理很多段落过短且语义不完整的问题，采用基于时间间隔和说话人相似性的合并策略。如果两个段落之间的间隔小于0.55秒，并且它们的说话人相似度超过0.65，则将它们合并为一个段落，直到句子的时长达到20秒。</p><p><img src="/images/wenetspeech4TTS.png" alt="Adjacent Segments Merging示意图" width="600"></p><h2 id="boundary-extension">2. Boundary Extension：</h2><p>为了解决段落开始和结束时可能截断的词汇问题，采用边界扩展方法，向前或向后扩展段落，但扩展不会超过0.5秒。</p><p><img src="/images/Boundary extension.png" alt="Boundary Extension示意图" width="600"></p><h2 id="speech-enhancement">3. Speech Enhancement：</h2><p>采用MBTFNet模型对语音进行增强，去除背景噪音和干扰音，提升语音质量。这一步是为了提高后续操作（如质量评估、多说话人检测、语音识别等）的准确性。经过增强的语音质量明显提高，验证了增强模型的有效性。</p><h2 id="multi-speaker-detection">4. Multi-Speaker Detection：</h2><p>使用基于ResNet293的说话人嵌入模型进行多说话人检测。通clustering将同一说话人的段落合并，并剔除包含多个说话人的段落，确保每个段落仅包含一个说话人。</p><h2 id="speech-recognition">5. Speech Recognition：</h2><p>使用Paraformer-largeASR系统对重构后的语音段落transcribe，解决OCR转录中存在的口语化和重复词汇的错误。通过计算转录的置信度分数，对转录结果的可靠性进行评估。</p><h2 id="quality-filtering">6. Quality Filtering：</h2><p>根据语音识别的置信度和多说话人检测结果进行QualityFiltering，剔除质量较差的段落。最终形成的WenetSpeech4TTS语料库包含12,800小时的高质量语音数据。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>AutoPrep论文阅读</title>
+    <link href="/2025/04/04/AutoPrep%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
+    <url>/2025/04/04/AutoPrep%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
+    
+    <content type="html"><![CDATA[<h1 id="pipeline示意图">Pipeline示意图</h1><p><img src="/images/autoprep.png" alt="pipeline示意图" width="500"></p><h1 id="处理流程">处理流程</h1><h2 id="speech-enhancement">1. Speech enhancement</h2><p>采用 universal-sample rate 的 USRBSRNN model， 支持8k-48kHz。</p><p>此外，还采用了一个 non-streaming 的 BSRNN noise reduction model</p><p>由于原始语音过长，非流式BSRNN无法处理，我们将原始语音划分为 12 秒的window length，并采用 4 秒的步长。然后使用 BSRNN模型处理每个语音块，并提取输出音频的中间 4秒作为分块输出。最后L，我们将所有分块输出拼接，以生成增强后的语音数据。</p><h2 id="speech-segmentation">2. Speech segmentation</h2><p>采用一种 time-delay neural network (TDNN)-based 的 voice activedetection (VAD) model。</p><ul><li><p>为了避免截断连续语音内容，我们仅在连续静音片段超过 1秒时进行分割，并在每个语音片段前后各保留 0.4 秒的音频。</p></li><li><p>为了避免语音片段过短（小于 1.5 秒），我们在 VAD结果中将中间的短片段进行合并，直到累计音频长度超过 1.5秒后再执行分割操作。</p></li><li><p>为防止语音片段过长（超过 30 秒），当片段长度超过 30秒时，我们在第一个静音帧处进行分割；若片段长度超过 40秒，则直接截断音频。</p></li></ul><h2 id="speaker-clustering">3. Speaker Clustering</h2><p>采用 spectral clustering。</p><p>具体而言，分为三步：</p><ol type="1"><li><p>采用 Wespeaker 中的 ResNet293 speaker embedding model计算每个片段的 speaker embeddings。</p></li><li><p>基于余弦相似度构建这些嵌入向量的相似度矩阵，并计算归一化的拉普拉斯矩阵，通过识别该矩阵特征值序列中一阶导数最大的索引，来确定说话人数量。</p></li><li><p>使用标准的 K-Means算法获取聚类中心及其分配结果。为避免同一人被错误地分配到不同的聚类中，我们进一步合并余弦相似度大于0.75的聚类中心。最终，我们根据说话人嵌入所属的聚类将说话人标签分配给每个片段。</p></li></ol><p>注：</p><ul><li><p>对于那些说话人嵌入被分配到不同聚类的语音片段，我们不会为其分配任何说话人标签。</p></li><li><p>AutoPrep 中的说话人聚类仅在数量有限的长语音片段中执行。</p></li><li><p>通常，我们限制每次聚类操作处理的总音频时长不超过 2小时。</p></li></ul><h2 id="target-speech-extraction">4. Target speech extraction</h2><p>使用BSRNN（pBSRNN）模型，对每个片段进行目标语音提取，并将每个说话人的clustercenter作为enrolled speaker embedding。</p><h2 id="quality-filtering">5. Quality filtering</h2><ul><li><p>为了减少说话人分配不准确的问题，我们首先丢弃与各说话人聚类中心相似度低于0.5 的片段。</p></li><li><p>为避免单个聚类中存在多位说话人的情况，我们还会丢弃那些与聚类中心的平均相似度低于0.55 且最大相似度低于 0.6 的聚类。</p></li></ul><h2 id="speech-recognition">6. Speech recognition</h2><p>我们使用一个基于 Conformer 架构的neural transducer ASR系统，transcribe 每个语音片段，生成文本标注。该 ASR 系统基于约 6万小时的多语种语音数据训练而成。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>语音技术</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>BL-JUST</title>
     <link href="/2025/03/17/BL-JUST%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/"/>
     <url>/2025/03/17/BL-JUST%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/</url>
