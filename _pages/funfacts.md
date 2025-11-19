@@ -3,8 +3,8 @@ permalink: /funfacts/
 title: "Funfacts"
 author_profile: true
 redirect_from: 
-  - /funfacts/
-  - /funfacts.html
+  - "/funfacts/"
+  - "/funfacts.html"
 ---
 
 {% include toc %}
