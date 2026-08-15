@@ -90,5 +90,7 @@
       <p><a href="{{ post.bibtexurl }}">{% include t.html key="download_bibtex_label" %}</a></p>
     {% endif %}
 
+    {% if post.citation %}{% include copy-citation.html citation=post.citation %}{% endif %}
+
   </article>
 </div>

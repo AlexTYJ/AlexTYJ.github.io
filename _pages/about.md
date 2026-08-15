@@ -28,6 +28,10 @@ My research centres on speech recognition — multi-speaker ASR, low-resource AS
 
 </div>
 
+## <span class="i18n-zh">近期动态</span><span class="i18n-en">News</span>
+
+{% include widgets/news.html %}
+
 ## <span class="i18n-zh">研究方向</span><span class="i18n-en">Research areas</span>
 
 {% include widgets/research-areas.html %}

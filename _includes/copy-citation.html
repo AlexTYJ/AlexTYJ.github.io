@@ -1,0 +1,20 @@
+{% comment %}
+  Copy-to-clipboard button for a citation string.
+
+  The text rides in a data attribute rather than being scraped back out of the
+  DOM, so what lands on the clipboard is the plain citation without the <b>/<i>
+  markup wrapped around the author list. `&quot;` is unescaped first, otherwise
+  `escape` would double it into a literal "&quot;" in the copied text.
+
+  Rendered hidden; assets/js/site-extras.js reveals it only where the clipboard
+  API exists, so no-JS visitors never see a button that does nothing.
+
+    include.citation  the raw citation string from front matter
+{% endcomment %}
+{% assign cite_text = include.citation | strip_html | replace: '&quot;', '"' | strip %}
+<button class="copy-cite" type="button" data-citation="{{ cite_text | escape }}" hidden>
+  <i class="fa-solid fa-copy fa-fw copy-cite__icon copy-cite__icon--idle" aria-hidden="true"></i>
+  <i class="fa-solid fa-check fa-fw copy-cite__icon copy-cite__icon--done" aria-hidden="true"></i>
+  <span class="copy-cite__label copy-cite__label--idle"><span class="i18n-zh">复制引用</span><span class="i18n-en">Copy citation</span></span>
+  <span class="copy-cite__label copy-cite__label--done"><span class="i18n-zh">已复制</span><span class="i18n-en">Copied</span></span>
+</button>

@@ -1,0 +1,38 @@
+# Homepage "news" feed, newest first. Rendered by _includes/widgets/news.html.
+#
+# Each entry needs a `date` (used for ordering and for the NEW badge) plus `zh`
+# and `en` text. `url` is optional; when present the whole line becomes a link.
+# Keep the text to one line — this is a feed, not a blog.
+
+- date: 2026-07-23
+  zh: "VibeVoice-ASR-BitNet 技术报告发布，在边缘 CPU 上实现实时多语种识别。"
+  en: "VibeVoice-ASR-BitNet technical report is out — real-time multilingual recognition on edge CPUs."
+  url: /publication/2026-07-23-vibevoice-asr-bitnet
+
+- date: 2026-06-27
+  zh: "第一作者工作 GigaSpeechBench 发布，一个 680 小时的真实场景多语种语音评测基准。"
+  en: "GigaSpeechBench is out — my first-author work, a 680-hour real-world multilingual speech benchmark."
+  url: /publication/2026-06-27-gigaspeechbench
+
+- date: 2026-05-29
+  zh: "OpenSTBench 发布，面向语音翻译的多维度统一评测框架。"
+  en: "OpenSTBench is out — a unified multidimensional evaluation framework for speech translation."
+  url: /publication/2026-05-29-openstbench
+
+- date: 2026-01-26
+  zh: "VibeVoice-ASR 技术报告发布，单次处理长达 60 分钟音频的通用语音理解框架。"
+  en: "VibeVoice-ASR technical report is out — single-pass speech understanding for up to 60 minutes of audio."
+  url: /publication/2026-01-26-vibevoice-asr
+
+- date: 2026-01-20
+  zh: "Habibi 发布，首个开源的统一多方言阿拉伯语语音合成框架。"
+  en: "Habibi is out — the first open-source unified-dialectal Arabic speech synthesis framework."
+  url: /publication/2026-01-20-habibi-tts
+
+- date: 2025-10-01
+  zh: "加入微软亚洲研究院（MSRA）通用人工智能研究组实习。"
+  en: "Started an internship with the General Artificial Intelligence group at Microsoft Research Asia."
+
+- date: 2025-06-01
+  zh: "在字节跳动 TikTok 部门进行暑期实习。"
+  en: "Summer internship on TikTok at ByteDance."

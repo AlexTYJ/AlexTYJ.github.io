@@ -1,0 +1,27 @@
+{% comment %}
+  One row of the news feed. Split out of news.html so the visible entries and
+  the ones inside <details> stay in sync.
+
+    include.item           entry from _data/news.yml
+    include.now_epoch      build time as a unix timestamp
+    include.recent_window  seconds within which an entry counts as new
+{% endcomment %}
+{% include base_path %}
+{% assign item = include.item %}
+{% assign item_epoch = item.date | date: "%s" | plus: 0 %}
+{% assign age = include.now_epoch | minus: item_epoch %}
+<li class="news-item">
+  <time class="news-item__date" datetime="{{ item.date | date: '%Y-%m-%d' }}">
+    <span class="i18n-zh">{{ item.date | date: "%Y.%m" }}</span><span class="i18n-en">{{ item.date | date: "%b %Y" }}</span>
+  </time>
+  <div class="news-item__body">
+    {% if age < include.recent_window %}
+      <span class="news-item__badge"><span class="i18n-zh">最新</span><span class="i18n-en">New</span></span>
+    {% endif %}
+    {% if item.url %}
+      <a href="{% if item.url contains '://' %}{{ item.url }}{% else %}{{ base_path }}{{ item.url }}{% endif %}"><span class="i18n-zh">{{ item.zh }}</span><span class="i18n-en">{{ item.en }}</span></a>
+    {% else %}
+      <span class="i18n-zh">{{ item.zh }}</span><span class="i18n-en">{{ item.en }}</span>
+    {% endif %}
+  </div>
+</li>

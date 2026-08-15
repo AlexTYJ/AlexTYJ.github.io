@@ -1,0 +1,37 @@
+{% include base_path %}
+{% comment %}
+  News feed from _data/news.yml, newest first.
+
+  The first few entries are always visible; the rest go inside a <details> so
+  the list stays short without needing JavaScript to expand it. `site.time` is
+  the build time, which is when GitHub Pages last rebuilt — close enough to
+  "now" for deciding which entries are recent enough to flag.
+{% endcomment %}
+{% assign news = site.data.news | sort: "date" | reverse %}
+{% assign visible_count = 4 %}
+{% assign now_epoch = site.time | date: "%s" | plus: 0 %}
+{% assign recent_window = 7776000 %}{% comment %} 90 days {% endcomment %}
+
+{% if news.size > 0 %}
+<div class="news-feed">
+  <ol class="news-list">
+    {% for item in news limit: visible_count %}
+      {% include widgets/news-item.html item=item now_epoch=now_epoch recent_window=recent_window %}
+    {% endfor %}
+  </ol>
+
+  {% if news.size > visible_count %}
+    {% assign rest = news.size | minus: visible_count %}
+    <details class="news-more">
+      <summary>
+        <span class="i18n-zh">更早的 {{ rest }} 条动态</span><span class="i18n-en">{{ rest }} earlier update{% if rest != 1 %}s{% endif %}</span>
+      </summary>
+      <ol class="news-list news-list--rest" start="{{ visible_count | plus: 1 }}">
+        {% for item in news offset: visible_count %}
+          {% include widgets/news-item.html item=item now_epoch=now_epoch recent_window=recent_window %}
+        {% endfor %}
+      </ol>
+    </details>
+  {% endif %}
+</div>
+{% endif %}
