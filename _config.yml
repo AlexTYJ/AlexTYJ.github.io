@@ -81,12 +81,12 @@ author:
 
 # Publication Category - The following the list of publication categories and their headings
 publication_category:
-  books:
-    title: 'Books'
-  manuscripts:
-    title: 'Journal Articles'    
-  conferences:
-    title: 'Conference Papers'
+  low_resource_asr:
+    title: 'Low-Resource Speech Recognition'
+    description: 'Benchmarks and speech technologies for languages, dialects, and communities underserved by conventional evaluation.'
+  multi_speaker_asr:
+    title: 'Multi-Speaker Speech Recognition'
+    description: 'Long-form and efficient ASR systems that unify transcription, speaker attribution, and practical deployment.'
 
 # Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews

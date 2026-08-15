@@ -5,27 +5,122 @@ permalink: /publications/
 author_profile: true
 ---
 
+<style>
+.publication-intro {
+  margin-bottom: 2.25rem;
+  padding-bottom: 1rem;
+  color: var(--global-text-color-light);
+  border-bottom: 1px solid var(--global-border-color);
+}
+.publication-groups {
+  margin-top: 0.5rem;
+}
+.publication-group {
+  --group-accent: var(--global-base-color);
+  margin-bottom: 3.25rem;
+}
+.publication-group--low-resource-asr {
+  --group-accent: #16856d;
+}
+.publication-group--multi-speaker-asr {
+  --group-accent: #c65d3b;
+}
+.publication-group__header {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  align-items: start;
+  margin-bottom: 1.5rem;
+  padding: 1rem 0 1.15rem;
+  border-top: 3px solid var(--group-accent);
+  border-bottom: 1px solid var(--global-border-color);
+}
+.publication-group__index {
+  padding-top: 0.2rem;
+  color: var(--group-accent);
+  font-size: 0.8em;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.publication-group__title {
+  margin: 0;
+  border: 0;
+  font-size: 1.4em;
+  line-height: 1.25;
+}
+.publication-group__description {
+  max-width: 42rem;
+  margin: 0.4rem 0 0;
+  color: var(--global-text-color-light);
+  font-size: 0.9em;
+  line-height: 1.55;
+}
+.publication-group__count {
+  padding-top: 0.25rem;
+  color: var(--global-text-color-light);
+  font-size: 0.8em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.publication-group .list__item {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--global-border-color);
+}
+.publication-group .list__item:last-child {
+  margin-bottom: 0;
+}
+.publication-group .archive__item-title {
+  margin-top: 0;
+  font-size: 1.15em;
+  line-height: 1.35;
+}
+.publication-group .archive__item > p {
+  margin-top: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+@media (max-width: 640px) {
+  .publication-group__header {
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+    gap: 0.65rem;
+  }
+  .publication-group__title {
+    font-size: 1.2em;
+  }
+  .publication-group__count {
+    grid-column: 2;
+    padding-top: 0;
+  }
+}
+</style>
+
 {% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
+  <div class="wordwrap publication-intro">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
 {% endif %}
 
 {% include base_path %}
 
-<!-- New style rendering if publication categories are defined -->
 {% if site.publication_category %}
-  {% for category in site.publication_category  %}
-    {% assign title_shown = false %}
-    {% for post in site.publications reversed %}
-      {% if post.category != category[0] %}
-        {% continue %}
+  <div class="publication-groups">
+    {% for category in site.publication_category %}
+      {% assign category_posts = site.publications | where: "category", category[0] %}
+      {% if category_posts.size > 0 %}
+        <section class="publication-group publication-group--{{ category[0] | replace: '_', '-' }}" aria-labelledby="group-{{ category[0] }}">
+          <header class="publication-group__header">
+            <span class="publication-group__index" aria-hidden="true">0{{ forloop.index }}</span>
+            <div>
+              <h2 class="publication-group__title" id="group-{{ category[0] }}">{{ category[1].title }}</h2>
+              <p class="publication-group__description">{{ category[1].description }}</p>
+            </div>
+            <span class="publication-group__count">{{ category_posts | size }} works</span>
+          </header>
+          {% for post in category_posts reversed %}
+            {% include archive-single.html %}
+          {% endfor %}
+        </section>
       {% endif %}
-      {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
-        {% assign title_shown = true %}
-      {% endunless %}
-      {% include archive-single.html %}
     {% endfor %}
-  {% endfor %}
+  </div>
 {% else %}
   {% for post in site.publications reversed %}
     {% include archive-single.html %}
