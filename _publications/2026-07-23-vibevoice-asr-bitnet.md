@@ -3,6 +3,8 @@ title: "VibeVoice-ASR-BitNet Technical Report"
 collection: publications
 category: multi_speaker_asr
 permalink: /publication/2026-07-23-vibevoice-asr-bitnet
+header:
+  teaser: publications/2026-07-23-vibevoice-asr-bitnet.webp
 excerpt: 'VibeVoice-ASR-BitNet compresses VibeVoice-ASR for real-time multilingual recognition on edge CPUs through heterogeneous quantization, custom SIMD kernels, and fused operators. It is 1.6-2.3x faster than Whisper.cpp at comparable model sizes. <br/><a href="https://github.com/microsoft/VibeASR.cpp"><img src="https://img.shields.io/github/stars/microsoft/VibeASR.cpp?style=social" alt="GitHub stars"></a>'
 date: 2026-07-23
 venue: 'arXiv preprint arXiv:2607.21075'

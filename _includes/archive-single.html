@@ -51,7 +51,17 @@
     {% elsif post.excerpt and site.read_more == 'enabled' %}
     <p class="archive__item-excerpt" itemprop="description"><p>{{ post.excerpt | markdownify | remove: '<p>' | remove: '</p>' }}<strong><a href="{{ base_path }}{{ post.url }}" rel="permalink"> Read more</a></strong></p></p>
     {% endif %}
-    
+
+    {% comment %}
+      The paper's headline figure, between the summary and the citation. The
+      "grid" branch above already draws the teaser its own way, so this is only
+      for the default list rendering used by the publications page.
+    {% endcomment %}
+    {% if post.collection == 'publications' and teaser and include.type != "grid" %}
+      {% capture post_url %}{{ base_path }}{{ post.url }}{% endcapture %}
+      {% include publication-figure.html src=teaser modifier="list" link=post_url %}
+    {% endif %}
+
     {% if post.citation and post.paperurl and post.slidesurl and post.bibtexurl %}
       <p>{% include t.html key="recommended_citation_label" %} {{ post.citation }}<br /><a href="{{ post.paperurl }}">{% include t.html key="download_paper_label" %}</a> | <a href="{{ post.slidesurl }}">{% include t.html key="download_slides_label" %}</a> | <a href="{{ post.bibtexurl }}">{% include t.html key="download_bibtex_label" %}</a></p>
     {% elsif post.citation and post.paperurl and post.slidesurl %}

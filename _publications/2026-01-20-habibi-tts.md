@@ -3,6 +3,8 @@ title: "Habibi: Laying the Open-Source Foundation of Unified-Dialectal Arabic Sp
 collection: publications
 category: low_resource_speech
 permalink: /publication/2026-01-20-habibi-tts
+header:
+  teaser: publications/2026-01-20-habibi-tts.webp
 excerpt: 'Habibi is a unified-dialectal Arabic TTS framework covering 12+ regional dialects. Our unified model matches or surpasses per-dialect specialized models and is highly competitive with ElevenLabs Eleven v3 (alpha). <br/><a href="https://github.com/SWivid/Habibi-TTS"><img src="https://img.shields.io/github/stars/SWivid/Habibi-TTS?style=social" alt="GitHub stars"></a>'
 date: 2026-01-20
 venue: 'arXiv preprint arXiv:2601.13802'

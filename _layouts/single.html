@@ -45,6 +45,15 @@ layout: default
       {% endunless %}
 
       <section class="page__content" itemprop="text">
+        {% comment %}
+          Lead with the paper's headline figure. Driven by `header.teaser`, the
+          same field the publications list and the homepage cards read, so a new
+          paper only has to declare it once.
+        {% endcomment %}
+        {% if page.collection == 'publications' and page.header.teaser %}
+          {% capture fig_alt %}Figure from {{ page.title | markdownify | strip_html | strip_newlines }}{% endcapture %}
+          {% include publication-figure.html src=page.header.teaser modifier="page" alt=fig_alt loading="eager" %}
+        {% endif %}
         {{ content }}
 
         {% if page.citation and page.paperurl and page.slidesurl and page.bibtexurl %}

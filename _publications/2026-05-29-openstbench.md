@@ -3,6 +3,8 @@ title: "OpenSTBench: Beyond Semantic Evaluation for Speech Translation"
 collection: publications
 category: speech_synthesis_translation
 permalink: /publication/2026-05-29-openstbench
+header:
+  teaser: publications/2026-05-29-openstbench.webp
 excerpt: 'OpenSTBench is a unified multidimensional evaluation framework for speech translation, covering S2TT and S2ST systems in both offline and streaming settings. It jointly measures translation quality, speech quality, speaker preservation, emotion and paralinguistic fidelity, temporal consistency, and latency. <br/><a href="https://github.com/sjtuayj/OpenSTBench"><img src="https://img.shields.io/github/stars/sjtuayj/OpenSTBench?style=social" alt="GitHub stars"></a>'
 date: 2026-05-29
 venue: 'arXiv preprint arXiv:2605.30792'

@@ -3,6 +3,8 @@ title: "VIBEVOICE-ASR Technical Report"
 collection: publications
 category: multi_speaker_asr
 permalink: /publication/2026-01-26-vibevoice-asr
+header:
+  teaser: publications/2026-01-26-vibevoice-asr.webp
 excerpt: 'VibeVoice-ASR is a general-purpose speech understanding framework that supports single-pass processing for up to 60 minutes of audio, unifying ASR, Speaker Diarization, and Timestamping into a single end-to-end generation task. It supports over 50 languages and natively handles code-switching. <br/><a href="https://github.com/microsoft/VibeVoice"><img src="https://img.shields.io/github/stars/microsoft/VibeVoice?style=social" alt="GitHub stars"></a>'
 date: 2026-01-26
 venue: 'arXiv preprint arXiv:2601.18184'

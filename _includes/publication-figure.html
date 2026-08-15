@@ -1,0 +1,22 @@
+{% comment %}
+  Headline figure for a publication, driven by `header.teaser` in the front
+  matter. Used in three places at three sizes: the homepage cards, the
+  publications list, and the publication page itself.
+
+  These are all academic figures on a white canvas, so the frame paints its own
+  white surface instead of inheriting the page background — in dark mode the
+  black axis labels and arrows would otherwise sit on near-black and vanish.
+
+    include.src       path under /images/, e.g. "publications/foo.webp"
+    include.alt       alt text
+    include.modifier  size variant: "card", "list", or "page"
+    include.link      optional href wrapping the figure
+    include.loading   img loading attribute, defaults to "lazy"
+{% endcomment %}
+{% include base_path %}
+{% if include.src contains "://" %}
+  {% assign fig_url = include.src %}
+{% else %}
+  {% assign fig_url = include.src | prepend: "/images/" | prepend: base_path %}
+{% endif %}
+{% if include.link %}<a class="pub-figure pub-figure--{{ include.modifier | default: "page" }}" href="{{ include.link }}" tabindex="-1" aria-hidden="true">{% else %}<div class="pub-figure pub-figure--{{ include.modifier | default: "page" }}">{% endif %}<img src="{{ fig_url }}" alt="{{ include.alt | default: "" | escape }}" loading="{{ include.loading | default: "lazy" }}" decoding="async">{% if include.link %}</a>{% else %}</div>{% endif %}

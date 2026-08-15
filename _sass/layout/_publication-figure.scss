@@ -1,0 +1,95 @@
+/* ==========================================================================
+   PUBLICATION FIGURES
+
+   The headline figure from each paper, rendered by
+   _includes/publication-figure.html at three sizes.
+
+   Every one of these is an academic figure drawn on white — radar plots,
+   architecture diagrams, teaser illustrations. The frame therefore paints its
+   own white surface rather than letting the page background through, because
+   in dark mode the black axis labels would otherwise be black-on-black. The
+   figures are shown whole (object-fit: contain) since cropping a diagram
+   destroys it; the letterboxing that produces is absorbed by the same white.
+   ========================================================================== */
+
+.pub-figure {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--global-border-color);
+  border-radius: $border-radius;
+  /* Not --global-bg-color: this stays white in both themes, see above. */
+  background-color: #fff;
+
+  img {
+    display: block;
+    object-fit: contain;
+    /* Cancels .page__content img and the archive image rules. */
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Full white at 100% is harsh against a dark page; take the edge off and
+   restore it when the reader is actually looking at the figure. */
+html[data-theme="dark"] .pub-figure {
+  filter: brightness(0.9);
+  transition: filter 0.18s ease-in-out;
+
+  &:hover {
+    filter: none;
+  }
+}
+
+/* Homepage cards: fixed height so a row of cards keeps a common baseline
+   regardless of each figure's aspect ratio. Letterboxing is unavoidable here,
+   and the white frame absorbs it. */
+.pub-figure--card {
+  height: 7rem;
+  margin-bottom: 0.85rem;
+
+  img {
+    width: 100%;
+    height: 100%;
+    padding: 0.3rem;
+  }
+}
+
+/* Publications list and publication page: the frame shrink-wraps the figure
+   (width: fit-content) so a portrait diagram does not sit in a wide box padded
+   with white on both sides. Height is capped instead of width, since a tall
+   figure would otherwise push the citation off the first screen. */
+.pub-figure--list,
+.pub-figure--page {
+  width: fit-content;
+  max-width: 100%;
+
+  img {
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+.pub-figure--list {
+  margin: 0.9rem 0;
+
+  img {
+    max-height: 15rem;
+    padding: 0.4rem;
+  }
+}
+
+.pub-figure--page {
+  margin: 0 0 1.5rem;
+
+  img {
+    max-height: 26rem;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .pub-figure--list img {
+    max-height: 11rem;
+  }
+}
