@@ -13,10 +13,17 @@ $doc-font-size              : 16;
 $paragraph-indent           : false; // true, false (default)
 $indent-var                 : 1.3em;
 
-/* System typefaces */
-$serif                      : Georgia, Times, serif;
-$sans-serif                 : -apple-system, ".SFNSText-Regular", "San Francisco", "Roboto", "Segoe UI", "Helvetica Neue", "Lucida Grande", Arial, sans-serif;
-$monospace                  : Monaco, Consolas, "Lucida Console", monospace;
+/* System typefaces
+   Western faces come first, CJK faces after: browsers resolve font-family per
+   character, so Latin text renders in Inter while Chinese falls back to the
+   platform's native face. Keeping CJK on system fonts avoids shipping a
+   multi-megabyte Chinese webfont. */
+$cjk-sans                   : "PingFang SC", "HarmonyOS Sans SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", "WenQuanYi Micro Hei";
+$cjk-serif                  : "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", SimSun;
+
+$serif                      : Georgia, Times, $cjk-serif, serif;
+$sans-serif                 : "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, ".SFNSText-Regular", "San Francisco", "Segoe UI", Roboto, "Helvetica Neue", "Lucida Grande", Arial, $cjk-sans, sans-serif;
+$monospace                  : "JetBrains Mono Variable", "JetBrains Mono", Monaco, Consolas, "Lucida Console", $cjk-sans, monospace;
 
 /* Sans serif typefaces */
 $sans-serif-narrow          : $sans-serif;

@@ -1,0 +1,168 @@
+/* ==========================================================================
+   CUSTOM REFINEMENTS
+
+   Layered on top of the theme partials: typography polish, link affordances,
+   and component detailing. Imported last in main.scss so it can override the
+   defaults above it without touching upstream files.
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--global-thead-color);
+}
+
+/*
+   Links
+   ========================================================================== */
+
+.page__content {
+  a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    transition: color 0.15s ease-in-out;
+  }
+}
+
+/* The archive partial underlines every link, which reads as noise at list
+   density. Reserve the underline for hover and let titles carry weight. */
+.archive {
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+  }
+}
+
+.archive__item-title {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+
+  a {
+    color: var(--global-text-color);
+
+    &:hover {
+      color: var(--global-link-color);
+    }
+  }
+}
+
+/*
+   Masthead
+   ========================================================================== */
+
+.masthead {
+  /* Falls back to the opaque background set in _masthead.scss where
+     color-mix or backdrop-filter is unsupported. */
+  background: color-mix(in srgb, var(--global-bg-color) 82%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+          backdrop-filter: saturate(180%) blur(12px);
+}
+
+/*
+   Navigation
+   ========================================================================== */
+
+/* The navicon bars and the overflow dropdown are hardcoded #fff upstream, which
+   leaves the hamburger invisible on the light masthead and gives the dropdown a
+   white background in dark mode. Tie both to the theme variables instead. */
+.greedy-nav {
+  button {
+    background-color: transparent;
+    color: var(--global-masthead-link-color);
+  }
+
+  .navicon,
+  .navicon::before,
+  .navicon::after {
+    background: var(--global-masthead-link-color);
+  }
+
+  /* Restore the X state that _utilities.scss sets; the rule above has equal
+     specificity and is imported later, so it needs winning back explicitly. */
+  .close .navicon {
+    background: transparent;
+  }
+
+  .hidden-links {
+    background: var(--global-bg-color);
+
+    &::after {
+      border-color: var(--global-bg-color) transparent;
+    }
+  }
+}
+
+/*
+   Author profile
+   ========================================================================== */
+
+.author__avatar img {
+  /* profile.png is a 2:3 portrait, so the theme's border-radius:50% renders it
+     as an ellipse. Crop to a square and bias the framing upward to keep the
+     face centred. */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: 50% 22%;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.author__avatar:hover img {
+  box-shadow: 0 4px 14px rgba(16, 24, 40, 0.14);
+}
+
+.author__name {
+  letter-spacing: -0.015em;
+}
+
+/* The employer line is the longest sidebar entry and was being clipped.
+   Let it wrap instead of overflowing. */
+.author__urls li {
+  white-space: normal;
+  line-height: 1.45;
+}
+
+/*
+   Publication list
+   ========================================================================== */
+
+.publication-group .list__item {
+  padding-left: 0.85rem;
+  margin-left: -0.85rem;
+  border-radius: $border-radius;
+  transition: background-color 0.18s ease-in-out, box-shadow 0.18s ease-in-out;
+
+  &:hover {
+    background-color: var(--global-code-background-color);
+    box-shadow: inset 3px 0 0 var(--group-accent);
+  }
+}
+
+/*
+   Tables, code and quotes
+   ========================================================================== */
+
+.page__content {
+  table {
+    border-radius: $border-radius;
+    overflow: hidden;
+  }
+
+  pre,
+  code {
+    font-variant-ligatures: none;
+    border-radius: $border-radius;
+  }
+
+  blockquote {
+    padding-left: 1em;
+    border-left: 3px solid var(--global-link-color);
+    color: var(--global-text-color-light);
+    font-style: normal;
+  }
+}

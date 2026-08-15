@@ -1,3 +1,14 @@
 <script type="module" src="{{ base_path }}/assets/js/main.min.js"></script>
 
+<script>
+  /* The greedy nav measures its links once on load to decide what to fold into
+     the overflow menu. Webfonts land after that and change the text metrics, so
+     ask it to re-measure once they are in. */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () {
+      window.dispatchEvent(new Event("resize"));
+    });
+  }
+</script>
+
 {% include analytics.html %}
