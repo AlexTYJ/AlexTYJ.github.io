@@ -2,6 +2,38 @@
 
 <!-- start custom head snippets -->
 
+<!-- Language. Both languages sit in the markup and CSS picks one, so the
+     attribute has to land before the first paint or the page flashes the wrong
+     one. Chinese is the default, including with JavaScript switched off, since
+     the stylesheet keys off :not([data-lang="en"]).
+
+     compress_html strips newlines outside <pre>, so a line comment inside this
+     script would swallow everything after it. Block comments only. -->
+<script>
+  (function () {
+    var root = document.documentElement;
+    var apply = function (lang) {
+      root.setAttribute("data-lang", lang);
+      root.setAttribute("lang", lang === "en" ? "en" : "zh-CN");
+    };
+    var stored = null;
+    try { stored = localStorage.getItem("lang"); } catch (e) {}
+    apply(stored === "en" ? "en" : "zh");
+
+    /* Delegated, so it survives the greedy nav moving the toggle between the
+       visible and hidden link lists, and so the handler can live here rather
+       than in assets/js/_main.js, which only reaches the page through the
+       checked-in main.min.js build artefact. */
+    document.addEventListener("click", function (e) {
+      if (!e.target || !e.target.closest || !e.target.closest("#lang-toggle")) { return; }
+      e.preventDefault();
+      var next = root.getAttribute("data-lang") === "en" ? "zh" : "en";
+      apply(next);
+      try { localStorage.setItem("lang", next); } catch (err) {}
+    });
+  })();
+</script>
+
 <!-- Latin webfonts (variable, one file covers every weight). Chinese falls back
      to system faces via the stack in _sass/_themes.scss -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>

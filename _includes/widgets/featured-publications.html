@@ -20,9 +20,9 @@
       {% if pub.venue %}<p class="widget-card__venue">{{ pub.venue }}</p>{% endif %}
       <p class="widget-card__desc">{{ pub.excerpt | strip_html | strip_newlines | truncate: 120 }}</p>
       {% if pub.paperurl %}
-        <p class="widget-card__links"><a href="{{ pub.paperurl }}">阅读论文 &rarr;</a></p>
+        <p class="widget-card__links"><a href="{{ pub.paperurl }}"><span class="i18n-zh">阅读论文 &rarr;</span><span class="i18n-en">Read paper &rarr;</span></a></p>
       {% endif %}
     </article>
   {% endfor %}
 </div>
-<p class="widget-more"><a href="{{ base_path }}/publications/">查看全部论文 &rarr;</a></p>
+<p class="widget-more"><a href="{{ base_path }}/publications/"><span class="i18n-zh">查看全部论文 &rarr;</span><span class="i18n-en">All publications &rarr;</span></a></p>

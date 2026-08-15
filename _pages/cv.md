@@ -1,6 +1,7 @@
 ---
 layout: archive
 title: "CV"
+title_zh: "简历"
 permalink: /cv/
 author_profile: true
 redirect_from:
@@ -49,23 +50,10 @@ Experience
   * Institute of Automation, Chinese Academy of Sciences
   * Advisor: Assoc. Prof. Bin Liu
 
-Skills
+Awards
 ======
-* Speech technologies
-  * Automatic speech recognition, offline and streaming
-  * Speaker diarization, timestamping, and speech translation
-  * Speech synthesis, including dialectal and multilingual TTS
-* Modeling
-  * Zipformer transducers and attention encoder-decoder architectures
-  * LLM-based speech understanding for long-form audio
-* Efficient inference
-  * Post-training quantization, including INT8 and ternary (BitNet) weights
-  * Custom SIMD kernels, operator fusion, and CPU deployment
-* Data and evaluation
-  * Multilingual and dialectal corpus construction with human annotation
-  * Benchmark design across languages, accents, domains, and age groups
-* Toolkits
-  * PyTorch, k2 / icefall, sherpa-onnx, whisper.cpp, Hugging Face
+* Second-Class Academic Scholarship, University of Chinese Academy of Sciences
+* Third-Class Academic Scholarship, University of Chinese Academy of Sciences
 
 Publications
 ======

@@ -1,0 +1,11 @@
+{%- comment -%}
+  Page headings come from front matter, which cannot carry the paired spans the
+  language toggle needs. A page opts in by adding `title_zh`; anything without
+  it renders exactly as before, markdownify included, so publication titles keep
+  their inline formatting.
+{%- endcomment -%}
+{%- if page.title_zh -%}
+<span class="i18n-zh">{{ page.title_zh }}</span><span class="i18n-en">{{ page.title }}</span>
+{%- else -%}
+{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}
+{%- endif -%}

@@ -1,0 +1,51 @@
+/* ==========================================================================
+   BILINGUAL CONTENT
+
+   Both languages ship in the markup and CSS picks the visible one from the
+   `data-lang` attribute that _includes/head/custom.html writes onto <html>
+   before first paint.
+
+   Only the hidden side is ever given a display value. That way the visible
+   side keeps whatever display its layout gave it — table-cell, list-item,
+   flex — instead of being forced back to a guessed default, and the page
+   still reads as Chinese when JavaScript is off, because the attribute is
+   simply absent and the :not() selector still matches.
+   ========================================================================== */
+
+html:not([data-lang="en"]) .i18n-en,
+html[data-lang="en"] .i18n-zh {
+  display: none;
+}
+
+/*
+   Language toggle
+   ========================================================================== */
+
+/* Both controls share one <li>. The greedy nav restores an overflowed link
+   with insertBefore($vlinks_persist_tail), and jQuery clones the node once per
+   target when that collection holds more than one element — so a second
+   `.persist.tail` item would duplicate links on every widening resize. */
+.greedy-nav .visible-links #nav-toggles {
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 25px;
+    /* The theme zeroes the right margin on the last item's links, which would
+       let the two controls collide; restate the gap and drop it only after the
+       final one. */
+    margin: 0 0.55rem;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  a:last-child {
+    margin-right: 0;
+  }
+}
+
+#lang-toggle {
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}

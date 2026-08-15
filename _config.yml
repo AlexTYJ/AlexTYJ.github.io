@@ -28,7 +28,9 @@ author:
   pronouns         : # example: "she/her"  
   #bio              : "Short biography for the left-hand sidebar"
   location         : "Beijing"
+  location_zh      : "北京"
   employer         : "University of Chinese Academy of Sciences"
+  employer_zh      : "中国科学院大学"
   uri              : # URL
   email            : "alextuyujie@gmail.com" 
 
@@ -83,10 +85,14 @@ author:
 publication_category:
   low_resource_asr:
     title: 'Low-Resource Speech Recognition'
+    title_zh: '低资源语音识别'
     description: 'Benchmarks and speech technologies for languages, dialects, and communities underserved by conventional evaluation.'
+    description_zh: '为常规评测长期忽视的语言、方言与人群，构建基准数据与可用的语音技术。'
   multi_speaker_asr:
     title: 'Multi-Speaker Speech Recognition'
+    title_zh: '多说话人语音识别'
     description: 'Long-form and efficient ASR systems that unify transcription, speaker attribution, and practical deployment.'
+    description_zh: '把转写、说话人归属与实际部署统一起来的长音频高效语音识别系统。'
 
 # Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews

@@ -9,9 +9,11 @@
 
 main:
   - title: "Publications"
+    title_zh: "论文"
     url: /publications/
 
   - title: "Projects"
+    title_zh: "项目"
     url: /projects/
     
   #- title: "Portfolio"
@@ -21,10 +23,12 @@ main:
     #url: /year-archive/
     
   - title: "CV"
+    title_zh: "简历"
     url: /cv/
 
   # - title: "CV"
   #   url: /cv-json/
 
   - title: "Fun facts"
+    title_zh: "趣事"
     url: /funfacts/

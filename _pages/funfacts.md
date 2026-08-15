@@ -1,6 +1,7 @@
 ---
 permalink: /funfacts/
-title: "Funfacts"
+title: "Fun facts"
+title_zh: "趣事"
 author_profile: true
 redirect_from: 
   - "/funfacts.html"

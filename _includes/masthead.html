@@ -13,10 +13,17 @@
             {% else %}
               {% assign domain = base_path %}
             {% endif %}
-            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}">{{ link.title }}</a></li>
+            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}"><span class="i18n-zh">{{ link.title_zh | default: link.title }}</span><span class="i18n-en">{{ link.title }}</span></a></li>
           {% endfor %}
-          <li id="theme-toggle" class="masthead__menu-item persist tail">
-            <a role="button" aria-labelledby="theme-icon"><i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i></a>
+          {% comment %}
+            The two controls share one <li> on purpose: the greedy nav restores
+            an overflowed link with insertBefore($vlinks_persist_tail), and
+            jQuery clones the node once per target, so a second `.persist.tail`
+            item would duplicate links on every widening resize.
+          {% endcomment %}
+          <li id="nav-toggles" class="masthead__menu-item persist tail">
+            <a id="lang-toggle" role="button" tabindex="0" title="中文 / English" aria-label="Switch language"><span class="i18n-zh">EN</span><span class="i18n-en">中</span></a>
+            <a id="theme-toggle" role="button" aria-labelledby="theme-icon"><i id="theme-icon" class="fa-solid fa-sun" aria-hidden="true" title="toggle theme"></i></a>
           </li>
         </ul>
         <ul class="hidden-links hidden"></ul>

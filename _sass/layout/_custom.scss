@@ -247,6 +247,30 @@ html[data-theme="dark"] img[src*="shields.io"] {
 }
 
 /*
+   Homepage timelines
+   ========================================================================== */
+
+/* Education, experience and awards on the homepage, tagged with {: .timeline-list}
+   in the Markdown. The leading glyph stands in for the bullet, so the marker is
+   dropped and the indent handed back; fa-fw keeps every glyph the same width, so
+   the dates still line up down the column, and the hanging indent pulls wrapped
+   lines under the text rather than under the icon. */
+.timeline-list {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    padding-left: 1.85em;
+    text-indent: -1.85em;
+  }
+
+  .fa-fw {
+    margin-right: 0.55em;
+    color: var(--global-text-color-light);
+  }
+}
+
+/*
    Publication list
    ========================================================================== */
 

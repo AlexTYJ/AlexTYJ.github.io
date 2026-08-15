@@ -1,0 +1,11 @@
+{%- comment -%}
+  Renders one _data/ui-text.yml key in both languages; _sass/layout/_i18n.scss
+  hides whichever side does not match the current data-lang. Falls back to the
+  other language when a locale is missing the key, so a gap in the table shows
+  up as a wrong-language word rather than as blank space.
+
+  Usage: {% include t.html key="follow_label" %}
+{%- endcomment -%}
+{%- assign _zh = site.data['ui-text'][site.locale][include.key] -%}
+{%- assign _en = site.data['ui-text']['en'][include.key] -%}
+<span class="i18n-zh">{{ _zh | default: _en }}</span><span class="i18n-en">{{ _en | default: _zh }}</span>
