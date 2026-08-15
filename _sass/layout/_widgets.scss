@@ -1,0 +1,176 @@
+/* ==========================================================================
+   HOMEPAGE WIDGETS
+
+   Card grids used by _includes/widgets/*. Everything is driven by the
+   --global-* custom properties so the cards follow the light/dark theme, and
+   by --group-accent so a publication category keeps the same colour it has on
+   the publications page.
+   ========================================================================== */
+
+.widget-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.widget-card {
+  --group-accent: var(--global-link-color);
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 1.1rem 1.15rem 1.15rem;
+  border: 1px solid var(--global-border-color);
+  border-radius: $border-radius;
+  background-color: var(--global-bg-color);
+  overflow: hidden;
+  transition: border-color 0.18s ease-in-out, box-shadow 0.18s ease-in-out,
+    transform 0.18s ease-in-out;
+
+  /* Accent rail on the left edge, tinted per research area. */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--group-accent);
+  }
+
+  &:hover {
+    border-color: var(--group-accent);
+    box-shadow: 0 4px 14px rgba(16, 24, 40, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+/* Same accents as .publication-group--* on the publications page. */
+.widget-card--low-resource-asr {
+  --group-accent: #16856d;
+}
+
+.widget-card--multi-speaker-asr {
+  --group-accent: #c65d3b;
+}
+
+.widget-card__title {
+  margin: 0.15rem 0 0;
+  font-size: 1.05em;
+  line-height: 1.35;
+
+  a {
+    color: var(--global-text-color);
+    text-decoration: none;
+
+    &:hover {
+      color: var(--global-link-color);
+    }
+  }
+}
+
+.widget-card__desc {
+  margin: 0.5rem 0 0;
+  color: var(--global-text-color-light);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+/*
+   Research area cards
+   ========================================================================== */
+
+/* The whole card is one <a>, so .page__content a would draw an underline across
+   the title and description. text-decoration cannot be cancelled by a
+   descendant, so it has to be turned off here, on the anchor itself, with
+   enough specificity to beat .page__content a. */
+a.widget-card--area {
+  text-decoration: none;
+
+  .widget-card__title {
+    color: var(--global-text-color);
+  }
+
+  &:hover .widget-card__title {
+    color: var(--group-accent);
+  }
+}
+
+.widget-card__count {
+  display: block;
+  color: var(--group-accent);
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.widget-card__count-unit {
+  color: var(--global-text-color-light);
+  font-size: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+/*
+   Publication cards
+   ========================================================================== */
+
+.widget-card__meta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+  color: var(--global-text-color-light);
+  font-size: 0.72em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.widget-card__tag {
+  color: var(--group-accent);
+}
+
+.widget-card__venue {
+  margin: 0.35rem 0 0;
+  color: var(--global-text-color-light);
+  font-size: 0.8em;
+  font-style: italic;
+}
+
+.widget-card__links {
+  /* Cards in a row stretch to equal height; pin the link to the bottom so the
+     row reads as a set rather than four ragged blocks. */
+  margin: auto 0 0;
+  padding-top: 0.7rem;
+  font-size: 0.82em;
+  font-weight: 600;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+  }
+}
+
+.widget-more {
+  margin: 0.85rem 0 0;
+  font-size: 0.88em;
+  font-weight: 600;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+  }
+}

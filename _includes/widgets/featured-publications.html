@@ -1,0 +1,28 @@
+{% include base_path %}
+{% comment %}
+  Curated via `featured: true` in a publication's front matter. With nothing
+  flagged, fall back to the most recent entries so the widget is never empty.
+{% endcomment %}
+{% assign featured = site.publications | where: "featured", true | sort: "date" | reverse %}
+{% if featured.size == 0 %}
+  {% assign featured = site.publications | sort: "date" | reverse %}
+{% endif %}
+<div class="widget-grid widget-grid--pubs">
+  {% for pub in featured limit: 4 %}
+    <article class="widget-card widget-card--pub widget-card--{{ pub.category | replace: '_', '-' }}">
+      <header class="widget-card__meta">
+        <span class="widget-card__tag">{{ site.publication_category[pub.category].title | default: "Publication" }}</span>
+        <time datetime="{{ pub.date | date: '%Y-%m-%d' }}">{{ pub.date | date: "%Y" }}</time>
+      </header>
+      <h3 class="widget-card__title">
+        <a href="{{ base_path }}{{ pub.permalink }}">{{ pub.title }}</a>
+      </h3>
+      {% if pub.venue %}<p class="widget-card__venue">{{ pub.venue }}</p>{% endif %}
+      <p class="widget-card__desc">{{ pub.excerpt | strip_html | strip_newlines | truncate: 120 }}</p>
+      {% if pub.paperurl %}
+        <p class="widget-card__links"><a href="{{ pub.paperurl }}">阅读论文 &rarr;</a></p>
+      {% endif %}
+    </article>
+  {% endfor %}
+</div>
+<p class="widget-more"><a href="{{ base_path }}/publications/">查看全部论文 &rarr;</a></p>

@@ -13,6 +13,14 @@ redirect_from:
 
 我目前的主要研究方向集中在语音识别，具体包括多说话人语音识别、低资源语音识别、流式语音识别等。此外，我对其他语音方向也有潜在的兴趣。
 
+## 研究方向
+
+{% include widgets/research-areas.html %}
+
+## 精选论文
+
+{% include widgets/featured-publications.html %}
+
 ## 教育经历
 
 - 2026.9-? 上海创智学院 & 中国科学院自动化研究所 模式识别与智能系统

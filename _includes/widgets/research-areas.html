@@ -1,0 +1,11 @@
+{% include base_path %}
+<div class="widget-grid widget-grid--areas">
+  {% for category in site.publication_category %}
+    {% assign category_posts = site.publications | where: "category", category[0] %}
+    <a class="widget-card widget-card--area widget-card--{{ category[0] | replace: '_', '-' }}" href="{{ base_path }}/publications/#group-{{ category[0] }}">
+      <span class="widget-card__count">{{ category_posts | size }} <span class="widget-card__count-unit">works</span></span>
+      <h3 class="widget-card__title">{{ category[1].title }}</h3>
+      <p class="widget-card__desc">{{ category[1].description }}</p>
+    </a>
+  {% endfor %}
+</div>
