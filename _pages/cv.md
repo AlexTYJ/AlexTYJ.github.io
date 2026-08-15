@@ -9,56 +9,86 @@ redirect_from:
 
 {% include base_path %}
 
+Research interests
+======
+Speech recognition, with a focus on multi-speaker ASR, low-resource ASR, and
+streaming ASR. Related interests in speech translation, speech synthesis, and
+efficient on-device speech models.
+
 Education
 ======
-* Ph.D in Version Control Theory, GitHub University, 2018 (expected)
-* M.S. in Jekyll, GitHub University, 2014
-* B.S. in GitHub, GitHub University, 2012
+* Ph.D. in Pattern Recognition and Intelligent Systems, Sep 2026 – present
+  * Shanghai Innovation Institute & Institute of Automation, Chinese Academy of Sciences
+  * Advisors: Prof. Jiajun Zhang and Assoc. Prof. Xie Chen
 
-Work experience
+* Visiting Student, Jan 2025 – May 2025
+  * University of California, Berkeley
+
+* B.Eng. in Artificial Intelligence, Sep 2022 – Jun 2026
+  * School of Artificial Intelligence, University of Chinese Academy of Sciences
+
+Experience
 ======
-* Spring 2024: Academic Pages Collaborator
-  * GitHub University
-  * Duties includes: Updates and improvements to template
-  * Supervisor: The Users
+* Research Intern, Oct 2025 – present
+  * Microsoft Research Asia (MSRA), General Artificial Intelligence group
+  * Advisors: Dr. Jianwei Yu and Dr. Zhiliang Peng
+  * VibeVoice-ASR, long-form speech understanding that unifies recognition,
+    diarization, and timestamping, and its BitNet-quantized variant for
+    real-time inference on edge CPUs
 
-* Fall 2015: Research Assistant
-  * GitHub University
-  * Duties included: Merging pull requests
-  * Supervisor: Professor Hub
+* Summer Intern, Jun 2025 – Sep 2025
+  * ByteDance, TikTok
 
-* Summer 2015: Research Assistant
-  * GitHub University
-  * Duties included: Tagging issues
-  * Supervisor: Professor Git
-  
+* Research Intern, Mar 2024 – present
+  * X-LANCE Lab (Cross Media Language Intelligence), Shanghai Jiao Tong University
+  * Advisor: Assoc. Prof. Xie Chen
+  * Multilingual benchmarking and streaming recognition, including
+    GigaSpeechBench and X-ASR
+
+* Undergraduate Research and Thesis, 2024 – 2026
+  * Institute of Automation, Chinese Academy of Sciences
+  * Advisor: Assoc. Prof. Bin Liu
+
 Skills
 ======
-* Skill 1
-* Skill 2
-  * Sub-skill 2.1
-  * Sub-skill 2.2
-  * Sub-skill 2.3
-* Skill 3
+* Speech technologies
+  * Automatic speech recognition, offline and streaming
+  * Speaker diarization, timestamping, and speech translation
+  * Speech synthesis, including dialectal and multilingual TTS
+* Modeling
+  * Zipformer transducers and attention encoder-decoder architectures
+  * LLM-based speech understanding for long-form audio
+* Efficient inference
+  * Post-training quantization, including INT8 and ternary (BitNet) weights
+  * Custom SIMD kernels, operator fusion, and CPU deployment
+* Data and evaluation
+  * Multilingual and dialectal corpus construction with human annotation
+  * Benchmark design across languages, accents, domains, and age groups
+* Toolkits
+  * PyTorch, k2 / icefall, sherpa-onnx, whisper.cpp, Hugging Face
 
 Publications
 ======
   <ul>{% for post in site.publications reversed %}
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
-  
-Talks
+
+Open-source projects
 ======
-  <ul>{% for post in site.talks reversed %}
-    {% include archive-single-talk-cv.html  %}
-  {% endfor %}</ul>
-  
-Teaching
-======
-  <ul>{% for post in site.teaching reversed %}
-    {% include archive-single-cv.html %}
-  {% endfor %}</ul>
-  
-Service and leadership
-======
-* Currently signed in to 43 different slack teams
+* [microsoft/VibeASR.cpp](https://github.com/microsoft/VibeASR.cpp) — VibeVoice-ASR-BitNet,
+  a compressed VibeVoice-ASR variant for real-time multilingual speech
+  recognition on edge CPUs, using INT8 acoustic tokenization and ternary
+  language-model weights
+* [SpeechColab/GigaSpeechBench](https://github.com/SpeechColab/GigaSpeechBench) — a
+  680-hour real-world multilingual ASR and AST benchmark spanning low-resource
+  languages, dialects, accents, domains, and age groups
+* [Gilgamesh-J/X-ASR](https://github.com/Gilgamesh-J/X-ASR) — streaming-focused
+  ASR models; the first release is a 160M-parameter Chinese-English Zipformer
+  transducer trained on approximately one million hours of speech, unifying
+  offline and true streaming recognition with sherpa-onnx deployment
+* [microsoft/VibeVoice](https://github.com/microsoft/VibeVoice) — open-source
+  frontier voice AI; VibeVoice-ASR handles up to 60 minutes of audio in a
+  single pass across 50+ languages
+* [SWivid/Habibi-TTS](https://github.com/SWivid/Habibi-TTS) — the first
+  open-source unified-dialectal Arabic TTS framework, covering 12+ regional
+  dialects
