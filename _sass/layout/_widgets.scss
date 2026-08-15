@@ -55,6 +55,10 @@
   --group-accent: var(--accent-multi-speaker-asr);
 }
 
+.widget-card--speech-synthesis-translation {
+  --group-accent: var(--accent-speech-synthesis-translation);
+}
+
 .widget-card__title {
   margin: 0.15rem 0 0;
   font-size: 1.05em;

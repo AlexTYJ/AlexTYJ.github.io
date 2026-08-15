@@ -11,7 +11,7 @@
   {% for pub in featured limit: 4 %}
     <article class="widget-card widget-card--pub widget-card--{{ pub.category | replace: '_', '-' }}">
       <header class="widget-card__meta">
-        <span class="widget-card__tag">{{ site.publication_category[pub.category].title | default: "Publication" }}</span>
+        <span class="widget-card__tag"><span class="i18n-zh">{{ site.publication_category[pub.category].title_zh | default: site.publication_category[pub.category].title | default: "论文" }}</span><span class="i18n-en">{{ site.publication_category[pub.category].title | default: "Publication" }}</span></span>
         <time datetime="{{ pub.date | date: '%Y-%m-%d' }}">{{ pub.date | date: "%Y" }}</time>
       </header>
       <h3 class="widget-card__title">

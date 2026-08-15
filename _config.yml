@@ -93,6 +93,11 @@ publication_category:
     title_zh: '多说话人语音识别'
     description: 'Long-form and efficient ASR systems that unify transcription, speaker attribution, and practical deployment.'
     description_zh: '把转写、说话人归属与实际部署统一起来的长音频高效语音识别系统。'
+  speech_synthesis_translation:
+    title: 'Speech Synthesis, Translation and Other Speech Technologies'
+    title_zh: '语音合成、翻译和其他语音技术'
+    description: 'Speech translation and synthesis systems, and the evaluation protocols they need, alongside neighbouring speech technologies.'
+    description_zh: '语音翻译与合成系统，以及它们所需的评测方法，兼及相邻的语音技术方向。'
 
 # Site Settings
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews

@@ -62,4 +62,6 @@ $sidebar-screen-min-width   : 1024px;
        to read against the page. */
     --accent-low-resource-asr           : #16856d;
     --accent-multi-speaker-asr          : #c65d3b;
+    /* Kept off the blue end so it does not read as a link. */
+    --accent-speech-synthesis-translation : #7a4bb5;
 }
