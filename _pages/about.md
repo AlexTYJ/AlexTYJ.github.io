@@ -12,7 +12,7 @@ redirect_from:
 
 大家好，我是涂宇杰。目前为中国科学院自动化研究所和上海创智学院的联培博士生，由[陈谐](https://chenxie95.github.io/)副教授与[张家俊](https://people.ucas.ac.cn/~jiajunzhang)研究员共同指导。我出生于江苏无锡，现居上海。我本科毕业于中国科学院大学。此外，我曾以访问学生身份在美国加州大学伯克利分校学习半年。
 
-我很幸运能在求学过程中走进许多顶尖科研机构。自 2024 年 3 月起，我成为上海交通大学跨媒体语言智能实验室（X-LANCE）的科研实习生，由[陈谐](https://chenxie95.github.io/)副教授指导。目前，我在微软亚洲研究院（MSRA）的通用人工智能研究组实习，由余剑威博士与[彭智亮](https://pengzhiliang.github.io/)博士共同指导。在本科的科研实践与毕业设计阶段，我的指导老师是刘斌副研究员。在此之前，我也曾在字节跳动的 TikTok 部门进行过暑期实习。
+我很幸运能在求学过程中走进许多顶尖科研机构。自 2024 年 3 月起，我成为上海交通大学跨媒体语言智能实验室（X-LANCE）的科研实习生，由[陈谐](https://chenxie95.github.io/)副教授指导。目前，我在微软亚洲研究院（MSRA）的通用人工智能研究组实习，由余剑威博士与[彭智亮](https://pengzhiliang.github.io/)博士共同指导。在本科的科研实践与毕业设计阶段，我的指导老师是[刘斌](https://people.ucas.edu.cn/~bin.liu)副研究员。在此之前，我也曾在字节跳动的 TikTok 部门进行过暑期实习。
 
 我目前的主要研究方向集中在语音识别，具体包括多说话人语音识别、低资源语音识别、流式语音识别等。此外，我对其他语音方向也有潜在的兴趣。
 
@@ -22,7 +22,7 @@ redirect_from:
 
 Hi, I am Yujie Tu, a Ph.D. student jointly trained by the Institute of Automation, Chinese Academy of Sciences and the Shanghai Innovation Institute, advised by Assoc. Prof. [Xie Chen](https://chenxie95.github.io/) and Prof. [Jiajun Zhang](https://people.ucas.ac.cn/~jiajunzhang). I was born in Wuxi, Jiangsu, and now live in Shanghai. I received my bachelor's degree from the University of Chinese Academy of Sciences, and spent half a year at the University of California, Berkeley as a visiting student.
 
-I have been fortunate to work in several outstanding research groups. Since March 2024 I have been a research intern at the Cross Media Language Intelligence Lab (X-LANCE), Shanghai Jiao Tong University, advised by Assoc. Prof. [Xie Chen](https://chenxie95.github.io/). I am currently interning with the General Artificial Intelligence group at Microsoft Research Asia (MSRA), advised by Dr. Jianwei Yu and Dr. [Zhiliang Peng](https://pengzhiliang.github.io/). My undergraduate research and thesis were supervised by Assoc. Prof. Bin Liu. Before that I spent a summer interning on TikTok at ByteDance.
+I have been fortunate to work in several outstanding research groups. Since March 2024 I have been a research intern at the Cross Media Language Intelligence Lab (X-LANCE), Shanghai Jiao Tong University, advised by Assoc. Prof. [Xie Chen](https://chenxie95.github.io/). I am currently interning with the General Artificial Intelligence group at Microsoft Research Asia (MSRA), advised by Dr. Jianwei Yu and Dr. [Zhiliang Peng](https://pengzhiliang.github.io/). My undergraduate research and thesis were supervised by Assoc. Prof. [Bin Liu](https://people.ucas.edu.cn/~bin.liu). Before that I spent a summer interning on TikTok at ByteDance.
 
 My research centres on speech recognition — multi-speaker ASR, low-resource ASR, and streaming ASR in particular. I am also drawn to the wider speech field.
 

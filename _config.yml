@@ -27,8 +27,8 @@ author:
   name             : "Yujie Tu"
   pronouns         : # example: "she/her"  
   #bio              : "Short biography for the left-hand sidebar"
-  location         : "Beijing"
-  location_zh      : "北京"
+  location         : "Shanghai"
+  location_zh      : "上海"
   employer         : "University of Chinese Academy of Sciences"
   employer_zh      : "中国科学院大学"
   uri              : # URL
