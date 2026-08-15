@@ -1,0 +1,63 @@
+{% comment %}
+  The two headline totals on the projects page: GitHub stars across every
+  project I have contributed to, and Hugging Face downloads across the models
+  and datasets those projects released.
+
+  The repo lists ride in data attributes so assets/js/project-stats.js can sum
+  them live; _data/project_stats.yml supplies the numbers shown until (or
+  instead of) that. The counting rule is spelled out under each number, since a
+  bare total invites the reader to guess at one.
+{% endcomment %}
+{% assign projects = site.data.projects %}
+{% assign snapshot = site.data.project_stats %}
+
+{% assign repos = "" %}
+{% assign hf_models = "" %}
+{% assign hf_datasets = "" %}
+{% assign hf_count = 0 %}
+{% assign first_author_count = 0 %}
+{% for p in projects %}
+  {% assign repos = repos | append: p.repo | append: "," %}
+  {% if p.role == "first" %}{% assign first_author_count = first_author_count | plus: 1 %}{% endif %}
+  {% for m in p.hf_models %}
+    {% assign hf_models = hf_models | append: m | append: "," %}
+    {% assign hf_count = hf_count | plus: 1 %}
+  {% endfor %}
+  {% for d in p.hf_datasets %}
+    {% assign hf_datasets = hf_datasets | append: d | append: "," %}
+    {% assign hf_count = hf_count | plus: 1 %}
+  {% endfor %}
+{% endfor %}
+{% assign co_author_count = projects.size | minus: first_author_count %}
+
+<div class="project-stats"
+     data-repos="{{ repos | split: "," | join: "," }}"
+     data-hf-models="{{ hf_models | split: "," | join: "," }}"
+     data-hf-datasets="{{ hf_datasets | split: "," | join: "," }}">
+
+  <div class="stat-card">
+    <div class="stat-card__icon"><i class="fa-brands fa-github" aria-hidden="true"></i></div>
+    <div class="stat-card__value" data-stat="stars" data-value="{{ snapshot.stars }}">{{ snapshot.stars }}</div>
+    <div class="stat-card__label">
+      <span class="i18n-zh">参与项目 GitHub Stars</span><span class="i18n-en">GitHub stars across my projects</span>
+    </div>
+    <div class="stat-card__note">
+      <span class="i18n-zh">{{ projects.size }} 个参与项目 · 含一作 {{ first_author_count }} 项与非一作 {{ co_author_count }} 项</span><span class="i18n-en">{{ projects.size }} projects I contributed to — {{ first_author_count }} as first author, {{ co_author_count }} as a contributing author</span>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card__icon stat-card__icon--hf" aria-hidden="true">🤗</div>
+    <div class="stat-card__value" data-stat="hf" data-value="{{ snapshot.hf_downloads }}">{{ snapshot.hf_downloads }}</div>
+    <div class="stat-card__label">
+      <span class="i18n-zh">Hugging Face 下载量</span><span class="i18n-en">Hugging Face downloads</span>
+    </div>
+    <div class="stat-card__note">
+      <span class="i18n-zh">{{ hf_count }} 个模型与数据集 · 近 30 天</span><span class="i18n-en">{{ hf_count }} models and datasets — trailing 30 days</span>
+    </div>
+  </div>
+
+  <p class="project-stats__asof">
+    <span class="i18n-zh">数据来自 GitHub 与 Hugging Face API，页面打开时实时获取；获取失败时回落到 {{ snapshot.as_of | date: "%Y 年 %-m 月 %-d 日" }} 的快照。</span><span class="i18n-en">Fetched live from the GitHub and Hugging Face APIs; falls back to a snapshot taken {{ snapshot.as_of | date: "%d %B %Y" }} if that fails.</span>
+  </p>
+</div>

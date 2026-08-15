@@ -6,139 +6,42 @@ permalink: /projects/
 author_profile: true
 ---
 
-<style>
-.timeline {
-  position: relative;
-  padding: 20px 0;
-  list-style: none;
-}
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--global-border-color);
-}
-.timeline-item {
-  position: relative;
-  margin-bottom: 30px;
-  padding-left: 50px;
-}
-.timeline-item::before {
-  content: '';
-  position: absolute;
-  left: 13px;
-  top: 6px;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  background: var(--global-link-color);
-  border: 3px solid var(--global-bg-color);
-  box-shadow: 0 0 0 2px var(--global-link-color);
-}
-.timeline-date {
-  font-size: 0.85em;
-  color: var(--global-text-color-light);
-  margin-bottom: 4px;
-}
-.timeline-title {
-  font-size: 1.1em;
-  font-weight: bold;
-  margin-bottom: 4px;
-}
-.timeline-title a {
-  text-decoration: none;
-}
-.timeline-desc {
-  font-size: 0.95em;
-  color: var(--global-text-color);
-  margin-bottom: 6px;
-}
-.timeline-badges img {
-  vertical-align: middle;
-  margin-right: 6px;
-}
-</style>
+{% include widgets/project-stats.html %}
 
 <div class="timeline">
-
-  <div class="timeline-item">
-    <div class="timeline-date">2026-07</div>
-    <div class="timeline-title">
-      <a href="https://github.com/microsoft/VibeASR.cpp">microsoft/VibeASR.cpp</a>
+  {% for p in site.data.projects %}
+    {% assign name = p.repo | split: "/" | last %}
+    <div class="timeline-item">
+      <div class="timeline-date">{{ p.date }}</div>
+      <div class="timeline-title">
+        <a href="https://github.com/{{ p.repo }}">{{ p.repo }}</a>
+        {% if p.role == "first" %}
+          <span class="role-tag role-tag--first"><span class="i18n-zh">一作</span><span class="i18n-en">First author</span></span>
+        {% else %}
+          <span class="role-tag"><span class="i18n-zh">参与</span><span class="i18n-en">Contributor</span></span>
+        {% endif %}
+      </div>
+      <div class="timeline-desc">
+        <span class="i18n-zh">{{ p.desc_zh }}</span><span class="i18n-en">{{ p.desc_en }}</span>
+      </div>
+      <div class="timeline-badges">
+        <a href="https://github.com/{{ p.repo }}"><img src="https://img.shields.io/github/stars/{{ p.repo }}?style=social" alt="GitHub stars"></a>
+        <a href="https://github.com/{{ p.repo }}"><img src="https://img.shields.io/github/forks/{{ p.repo }}?style=social" alt="GitHub forks"></a>
+        {% if p.arxiv %}
+          <a href="https://arxiv.org/abs/{{ p.arxiv }}"><img src="https://img.shields.io/badge/arXiv-{{ p.arxiv }}-b31b1b.svg" alt="arXiv"></a>
+        {% endif %}
+        {% for m in p.hf_models %}
+          {% assign label = m | split: "/" | last | replace: "-", "--" %}
+          <a href="https://huggingface.co/{{ m }}"><img src="https://img.shields.io/badge/Hugging_Face-{{ label }}-FFD21E" alt="Hugging Face model {{ m }}"></a>
+        {% endfor %}
+        {% for d in p.hf_datasets %}
+          {% assign label = d | split: "/" | last | replace: "-", "--" %}
+          <a href="https://huggingface.co/datasets/{{ d }}"><img src="https://img.shields.io/badge/Hugging_Face-{{ label }}-FFD21E" alt="Hugging Face dataset {{ d }}"></a>
+        {% endfor %}
+        {% if p.note_en %}
+          <img src="https://img.shields.io/badge/Technical_Report-Coming_Soon-6a737d" alt="{{ p.note_en }}">
+        {% endif %}
+      </div>
     </div>
-    <div class="timeline-desc">
-      VibeVoice-ASR-BitNet - a compressed VibeVoice-ASR variant for real-time multilingual speech recognition on edge CPUs, using INT8 acoustic tokenization and ternary language-model weights.
-    </div>
-    <div class="timeline-badges">
-      <a href="https://github.com/microsoft/VibeASR.cpp"><img src="https://img.shields.io/github/stars/microsoft/VibeASR.cpp?style=social" alt="GitHub stars"></a>
-      <a href="https://github.com/microsoft/VibeASR.cpp"><img src="https://img.shields.io/github/forks/microsoft/VibeASR.cpp?style=social" alt="GitHub forks"></a>
-      <a href="https://arxiv.org/abs/2607.21075"><img src="https://img.shields.io/badge/arXiv-2607.21075-b31b1b.svg" alt="arXiv"></a>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-date">2026-06</div>
-    <div class="timeline-title">
-      <a href="https://github.com/SpeechColab/GigaSpeechBench">SpeechColab/GigaSpeechBench</a>
-    </div>
-    <div class="timeline-desc">
-      GigaSpeechBench - my first-author work introducing a 680-hour, real-world multilingual ASR &amp; AST benchmark spanning low-resource languages, dialects, accents, domains, and age groups.
-    </div>
-    <div class="timeline-badges">
-      <a href="https://github.com/SpeechColab/GigaSpeechBench"><img src="https://img.shields.io/github/stars/SpeechColab/GigaSpeechBench?style=social" alt="GitHub stars"></a>
-      <a href="https://github.com/SpeechColab/GigaSpeechBench"><img src="https://img.shields.io/github/forks/SpeechColab/GigaSpeechBench?style=social" alt="GitHub forks"></a>
-      <a href="https://arxiv.org/abs/2606.28884"><img src="https://img.shields.io/badge/arXiv-2606.28884-b31b1b.svg" alt="arXiv"></a>
-      <a href="https://huggingface.co/datasets/speechcolab/GigaSpeechBench"><img src="https://img.shields.io/badge/Hugging_Face-Dataset-FFD21E" alt="Hugging Face dataset"></a>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-date">2026-05</div>
-    <div class="timeline-title">
-      <a href="https://github.com/Gilgamesh-J/X-ASR">Gilgamesh-J/X-ASR</a>
-    </div>
-    <div class="timeline-desc">
-      X-ASR - a series of streaming-focused automatic speech recognition models. Its first release is a 160M-parameter Chinese-English Zipformer transducer trained on approximately one million hours of speech, unifying offline and true streaming recognition with sherpa-onnx deployment.
-    </div>
-    <div class="timeline-badges">
-      <a href="https://github.com/Gilgamesh-J/X-ASR"><img src="https://img.shields.io/github/stars/Gilgamesh-J/X-ASR?style=social" alt="GitHub stars"></a>
-      <a href="https://github.com/Gilgamesh-J/X-ASR"><img src="https://img.shields.io/github/forks/Gilgamesh-J/X-ASR?style=social" alt="GitHub forks"></a>
-      <a href="https://huggingface.co/GilgameshWind/X-ASR-zh-en"><img src="https://img.shields.io/badge/Hugging_Face-X--ASR--zh--en-FFD21E" alt="Hugging Face model"></a>
-      <img src="https://img.shields.io/badge/Technical_Report-Coming_Soon-6a737d" alt="Technical report coming soon">
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-date">2026-01</div>
-    <div class="timeline-title">
-      <a href="https://github.com/microsoft/VibeVoice">microsoft/VibeVoice</a>
-    </div>
-    <div class="timeline-desc">
-      Open-Source Frontier Voice AI — VibeVoice-ASR supports single-pass processing for up to 60 minutes of audio, unifying ASR, Speaker Diarization, and Timestamping. 50+ languages supported.
-    </div>
-    <div class="timeline-badges">
-      <a href="https://github.com/microsoft/VibeVoice"><img src="https://img.shields.io/github/stars/microsoft/VibeVoice?style=social" alt="GitHub stars"></a>
-      <a href="https://github.com/microsoft/VibeVoice"><img src="https://img.shields.io/github/forks/microsoft/VibeVoice?style=social" alt="GitHub forks"></a>
-      <a href="https://arxiv.org/abs/2601.18184"><img src="https://img.shields.io/badge/arXiv-2601.18184-b31b1b.svg" alt="arXiv"></a>
-    </div>
-  </div>
-
-  <div class="timeline-item">
-    <div class="timeline-date">2026-01</div>
-    <div class="timeline-title">
-      <a href="https://github.com/SWivid/Habibi-TTS">SWivid/Habibi-TTS</a>
-    </div>
-    <div class="timeline-desc">
-      Habibi — The first open-source unified-dialectal Arabic TTS framework covering 12+ regional dialects. Competitive with ElevenLabs Eleven v3 (alpha).
-    </div>
-    <div class="timeline-badges">
-      <a href="https://github.com/SWivid/Habibi-TTS"><img src="https://img.shields.io/github/stars/SWivid/Habibi-TTS?style=social" alt="GitHub stars"></a>
-      <a href="https://github.com/SWivid/Habibi-TTS"><img src="https://img.shields.io/github/forks/SWivid/Habibi-TTS?style=social" alt="GitHub forks"></a>
-      <a href="https://arxiv.org/abs/2601.13802"><img src="https://img.shields.io/badge/arXiv-2601.13802-b31b1b.svg" alt="arXiv"></a>
-    </div>
-  </div>
-
+  {% endfor %}
 </div>

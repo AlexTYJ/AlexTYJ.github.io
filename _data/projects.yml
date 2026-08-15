@@ -1,0 +1,92 @@
+# Projects I have contributed to, newest first. Rendered by _pages/projects.html
+# and summed by _includes/widgets/project-stats.html.
+#
+#   repo         GitHub "owner/name". Drives the stars/forks badges and the
+#                stars total on the projects page.
+#   role         first    — I am the first author
+#                co       — I am a contributing author
+#   hf_models    Hugging Face model repos released by this project, "owner/name".
+#   hf_datasets  Hugging Face dataset repos, same form.
+#
+# The Hugging Face lists are the download-total's counting rule, so keep them to
+# assets that came out of the work itself. microsoft/VibeVoice also ships the
+# VibeVoice TTS models, which are a different paper I had no part in, so they
+# are deliberately absent even though the repo's stars are counted (GitHub has
+# no way to attribute stars to one half of a repository).
+
+- date: 2026-07
+  repo: microsoft/VibeASR.cpp
+  role: co
+  arxiv: "2607.21075"
+  hf_models:
+    - microsoft/VibeVoice-ASR-BitNet
+  desc_en: >-
+    VibeVoice-ASR-BitNet — a compressed VibeVoice-ASR variant for real-time
+    multilingual speech recognition on edge CPUs, using INT8 acoustic
+    tokenization and ternary language-model weights.
+  desc_zh: "VibeVoice-ASR-BitNet —— VibeVoice-ASR 的压缩版本，用 INT8 声学 token 化与三值语言模型权重，在边缘 CPU 上实现实时多语种语音识别。"
+
+- date: 2026-06
+  repo: SpeechColab/GigaSpeechBench
+  role: first
+  arxiv: "2606.28884"
+  hf_datasets:
+    - speechcolab/GigaSpeechBench
+  desc_en: >-
+    GigaSpeechBench — my first-author work introducing a 680-hour, real-world
+    multilingual ASR &amp; AST benchmark spanning low-resource languages,
+    dialects, accents, domains, and age groups.
+  desc_zh: "GigaSpeechBench —— 我的一作工作，一个 680 小时的真实场景多语种 ASR 与 AST 评测基准，覆盖低资源语言、方言、口音、垂直领域与不同年龄人群。"
+
+- date: 2026-05
+  repo: Gilgamesh-J/X-ASR
+  role: co
+  hf_models:
+    - GilgameshWind/X-ASR-zh-en
+  note_en: Technical report coming soon
+  note_zh: 技术报告即将发布
+  desc_en: >-
+    X-ASR — a series of streaming-focused automatic speech recognition models.
+    Its first release is a 160M-parameter Chinese-English Zipformer transducer
+    trained on approximately one million hours of speech, unifying offline and
+    true streaming recognition with sherpa-onnx deployment.
+  desc_zh: "X-ASR —— 面向流式的语音识别模型系列。首个版本是 160M 参数的中英 Zipformer transducer，在约一百万小时语音上训练，统一了离线与真流式识别，并支持 sherpa-onnx 部署。"
+
+- date: 2026-05
+  repo: sjtuayj/OpenSTBench
+  role: co
+  arxiv: "2605.30792"
+  hf_datasets:
+    - ayj111/openstbench-paired-set
+  desc_en: >-
+    OpenSTBench — a unified multidimensional evaluation framework for speech
+    translation, covering S2TT and S2ST systems in both offline and streaming
+    settings. It jointly measures translation quality, speech quality, speaker
+    preservation, emotion and paralinguistic fidelity, temporal consistency,
+    and latency.
+  desc_zh: "OpenSTBench —— 面向语音翻译的统一多维度评测框架，覆盖离线与流式设定下的 S2TT 与 S2ST 系统，联合衡量翻译质量、语音质量、说话人保持、情感与副语言信息还原、时序一致性与延迟。"
+
+- date: 2026-01
+  repo: microsoft/VibeVoice
+  role: co
+  arxiv: "2601.18184"
+  hf_models:
+    - microsoft/VibeVoice-ASR
+    - microsoft/VibeVoice-ASR-HF
+  desc_en: >-
+    Open-Source Frontier Voice AI — VibeVoice-ASR supports single-pass
+    processing for up to 60 minutes of audio, unifying ASR, speaker
+    diarization, and timestamping. 50+ languages supported.
+  desc_zh: "开源前沿语音 AI —— VibeVoice-ASR 支持单次处理长达 60 分钟的音频，把语音识别、说话人日志与时间戳统一在一个框架内，支持 50 多种语言。"
+
+- date: 2026-01
+  repo: SWivid/Habibi-TTS
+  role: co
+  arxiv: "2601.13802"
+  hf_models:
+    - SWivid/Habibi-TTS
+  desc_en: >-
+    Habibi — the first open-source unified-dialectal Arabic TTS framework,
+    covering 12+ regional dialects. Competitive with ElevenLabs Eleven v3
+    (alpha).
+  desc_zh: "Habibi —— 首个开源的统一多方言阿拉伯语语音合成框架，覆盖 12 种以上地区方言，效果可与 ElevenLabs Eleven v3 (alpha) 相比。"

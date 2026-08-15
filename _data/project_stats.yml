@@ -1,0 +1,12 @@
+# Fallback numbers for the two totals on the projects page.
+#
+# assets/js/project-stats.js replaces these with live figures from the GitHub
+# and Hugging Face APIs on load; they are what visitors see if those calls fail
+# (or are rate-limited — the GitHub API allows 60 unauthenticated requests an
+# hour per IP). Both are sums over the repos listed in _data/projects.yml.
+#
+# Refresh by re-running the same API calls the script makes.
+as_of: 2026-08-15
+stars: 53404
+# Hugging Face reports downloads for the trailing 30 days, not all time.
+hf_downloads: 799866

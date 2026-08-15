@@ -1,0 +1,178 @@
+/* ==========================================================================
+   PROJECTS PAGE
+
+   The two headline totals, plus the project timeline underneath. Both used to
+   live in a <style> block inside _pages/projects.html.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Headline totals
+   -------------------------------------------------------------------------- */
+
+.project-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.stat-card {
+  position: relative;
+  padding: 1.15rem 1.25rem 1rem;
+  border: 1px solid var(--global-border-color);
+  border-radius: $border-radius;
+  background: var(--global-bg-color);
+  overflow: hidden;
+
+  /* Accent edge, matching the publication-group cards. */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--global-link-color);
+  }
+}
+
+.stat-card__icon {
+  position: absolute;
+  top: 0.9rem;
+  right: 1.1rem;
+  color: var(--global-border-color);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.stat-card__icon--hf {
+  /* The emoji ignores `color`, so dim it to sit as quietly as the icon. */
+  opacity: 0.45;
+  filter: grayscale(0.35);
+}
+
+.stat-card__value {
+  font-family: $sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-card__label {
+  margin-top: 0.15rem;
+  font-size: 0.92em;
+  font-weight: 600;
+}
+
+.stat-card__note {
+  margin-top: 0.3rem;
+  color: var(--global-text-color-light);
+  font-size: 0.78em;
+  line-height: 1.5;
+}
+
+.project-stats__asof {
+  grid-column: 1 / -1;
+  margin: -0.35rem 0 0;
+  color: var(--global-text-color-light);
+  font-size: 0.75em;
+  line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+  .project-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stat-card__value {
+    font-size: 1.7rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Timeline
+   -------------------------------------------------------------------------- */
+
+.timeline {
+  position: relative;
+  padding: 20px 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--global-border-color);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+  padding-left: 50px;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 6px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--global-link-color);
+  border: 3px solid var(--global-bg-color);
+  box-shadow: 0 0 0 2px var(--global-link-color);
+}
+
+.timeline-date {
+  font-size: 0.85em;
+  color: var(--global-text-color-light);
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.timeline-title a {
+  text-decoration: none;
+}
+
+.timeline-desc {
+  font-size: 0.95em;
+  color: var(--global-text-color);
+  margin-bottom: 6px;
+}
+
+.timeline-badges img {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* Whether the project is my own work or one I contributed to. */
+.role-tag {
+  display: inline-block;
+  margin-left: 0.4rem;
+  padding: 0.1em 0.5em;
+  border: 1px solid var(--global-border-color);
+  border-radius: 999px;
+  color: var(--global-text-color-light);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: 0.14em;
+}
+
+.role-tag--first {
+  border-color: var(--global-link-color);
+  background: var(--global-link-color);
+  color: #fff;
+}
