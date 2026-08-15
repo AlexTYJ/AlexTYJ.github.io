@@ -48,11 +48,11 @@
 
 /* Same accents as .publication-group--* on the publications page. */
 .widget-card--low-resource-asr {
-  --group-accent: #16856d;
+  --group-accent: var(--accent-low-resource-asr);
 }
 
 .widget-card--multi-speaker-asr {
-  --group-accent: #c65d3b;
+  --group-accent: var(--accent-multi-speaker-asr);
 }
 
 .widget-card__title {

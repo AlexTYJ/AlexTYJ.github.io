@@ -99,6 +99,19 @@ html {
 }
 
 /*
+   Headings
+   ========================================================================== */
+
+/* An h2 carries a full-width border-bottom, and a block box spans the whole
+   content width even when a float is in the way — so on pages with a table of
+   contents the rule slides under the TOC box. A block that establishes its own
+   formatting context is required to sit beside floats rather than under them,
+   which trims the rule to the space actually available. */
+.page__content h2 {
+  display: flow-root;
+}
+
+/*
    Author profile
    ========================================================================== */
 
@@ -125,6 +138,112 @@ html {
 .author__urls li {
   white-space: normal;
   line-height: 1.45;
+}
+
+/* Brand colours are picked for a white page, so the near-black ones vanish on
+   the dark background. Academic sidebars are link lists, not a brand showcase —
+   let the icons take the text colour there. */
+html[data-theme="dark"] .social-icons {
+  .fa,
+  .fa-github,
+  .fa-github-alt,
+  .fa-github-square,
+  .fa-medium,
+  .fa-medium-square,
+  .fa-spotify,
+  .fa-tumblr,
+  .fa-tumblr-square,
+  .fa-vine {
+    color: var(--global-text-color);
+  }
+}
+
+/* The light-mode hover shadows are tinted near-black, which is invisible once
+   the page behind them is already dark. Deepen and spread them instead. */
+html[data-theme="dark"] {
+  .author__avatar:hover img,
+  .widget-card:hover {
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+  }
+}
+
+/*
+   Buttons
+   ========================================================================== */
+
+/* .page__content underlines every link, and a .btn is a link. The underline
+   runs through the label and reads as a rendering fault, so cancel it on the
+   anchor itself — a descendant cannot undo text-decoration. */
+.page__content a.btn {
+  text-decoration: none;
+}
+
+/* Upstream hovers every button to a flat #333 regardless of its own colour.
+   Keep the button's identity and just deepen it. */
+.btn:hover {
+  filter: brightness(0.88);
+}
+
+/* White label on these two was well under the readability threshold
+   (#62c462 and #f89406 are light enough to wash the text out). */
+.btn--success {
+  background-color: #2f8552;
+}
+
+.btn--warning {
+  background-color: #b56a12;
+}
+
+/* The upstream $social list has no `x` entry, so .btn--x fell back to the
+   default backdrop and the share button read as a blank slab. */
+.btn--x {
+  background-color: #16181c;
+}
+
+html[data-theme="dark"] .btn--x {
+  background-color: #2f353d;
+}
+
+/* "Follow" prints #fff on the page background on hover, i.e. nothing. */
+.btn--inverse:hover {
+  color: var(--global-link-color) !important;
+}
+
+/*
+   Table of contents
+   ========================================================================== */
+
+.toc {
+  /* Hardcoded #fff upstream — a white slab in dark mode. */
+  background-color: var(--global-bg-color);
+
+  .nav__title {
+    letter-spacing: 0.06em;
+  }
+}
+
+.toc__menu a {
+  color: var(--global-text-color);
+
+  &:hover {
+    /* Upstream puts #000 on --global-link-color-hover, which in light mode is a
+       dark navy: black on navy. Use a tint instead of a fill. */
+    color: var(--global-link-color);
+    background: var(--global-code-background-color);
+  }
+}
+
+/*
+   Shields.io badges
+   ========================================================================== */
+
+/* The badges are baked for a white page: the `social` style is light grey with
+   dark text, so on the dark background they read as torn-out white blocks.
+   Seat every badge on the same light chip so the row looks intentional. */
+html[data-theme="dark"] img[src*="shields.io"] {
+  padding: 2px 4px;
+  border-radius: 5px;
+  background-color: #eef1f5;
 }
 
 /*

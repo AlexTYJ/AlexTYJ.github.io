@@ -37,7 +37,10 @@ $sidebar-screen-min-width   : 1024px;
 
 /* Light theme for the site */
 :root {
-    --global-base-color                 : #{$background};
+    /* Backdrop for elements that print #fff on top of it (.btn, .toc__title,
+       the active nav pill, the current pagination page) — it has to stay dark
+       enough for white text, so it is not the page background. */
+    --global-base-color                 : #{$dark-primary-color};
     --global-bg-color                   : #{$background};
     --global-footer-bg-color            : #{$footer};
     --global-border-color               : #{$border-color};
@@ -53,4 +56,10 @@ $sidebar-screen-min-width   : 1024px;
     --global-text-color                 : #{$text};
     --global-text-color-light           : #{$light-primary-color};
     --global-thead-color                : #{$background-lighter};
+
+    /* Per-research-area accents, shared by the publication groups and the
+       homepage widgets. Redefined in the dark theme, where these are too dark
+       to read against the page. */
+    --accent-low-resource-asr           : #16856d;
+    --accent-multi-speaker-asr          : #c65d3b;
 }

@@ -37,7 +37,8 @@ $sidebar-screen-min-width   : 1024px;
 
 /* Dark theme for the site */
 html[data-theme="dark"] {
-    --global-base-color                 : #{$background};
+    /* Same contract as the light theme: white text sits on top of this. */
+    --global-base-color                 : #{mix(#000, $primary-color, 55%)};
     --global-bg-color                   : #{$background};
     --global-footer-bg-color            : #{$footer};
     --global-border-color               : #{$border-color};
@@ -53,4 +54,9 @@ html[data-theme="dark"] {
     --global-text-color                 : #{$text};
     --global-text-color-light           : #{$light-primary-color};
     --global-thead-color                : #{$background-lighter};
+
+    /* Lifted well above the light-theme values — the originals sit at roughly
+       2.5:1 against this background. */
+    --accent-low-resource-asr           : #45c1a2;
+    --accent-multi-speaker-asr          : #e8916a;
 }
