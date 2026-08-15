@@ -29,8 +29,8 @@ author:
   #bio              : "Short biography for the left-hand sidebar"
   location         : "Shanghai"
   location_zh      : "上海"
-  employer         : "University of Chinese Academy of Sciences"
-  employer_zh      : "中国科学院大学"
+  employer         : "Shanghai Innovation Institute"
+  employer_zh      : "上海创智学院"
   uri              : # URL
   email            : "alextuyujie@gmail.com" 
 
@@ -83,11 +83,11 @@ author:
 
 # Publication Category - The following the list of publication categories and their headings
 publication_category:
-  low_resource_asr:
-    title: 'Low-Resource Speech Recognition'
-    title_zh: '低资源语音识别'
-    description: 'Benchmarks and speech technologies for languages, dialects, and communities underserved by conventional evaluation.'
-    description_zh: '为常规评测长期忽视的语言、方言与人群，构建基准数据与可用的语音技术。'
+  low_resource_speech:
+    title: 'Low-Resource Speech Technologies'
+    title_zh: '低资源语音技术'
+    description: 'Benchmarks, recognition and synthesis for languages, dialects, and communities that conventional evaluation leaves out.'
+    description_zh: '为常规评测长期忽视的语言、方言与人群，构建基准数据与识别、合成等语音技术。'
   multi_speaker_asr:
     title: 'Multi-Speaker Speech Recognition'
     title_zh: '多说话人语音识别'

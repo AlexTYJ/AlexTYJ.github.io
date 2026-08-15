@@ -1,7 +1,7 @@
 ---
 title: "GigaSpeechBench: A Real-World Multilingual Speech-to-Text Benchmark"
 collection: publications
-category: low_resource_asr
+category: low_resource_speech
 permalink: /publication/2026-06-27-gigaspeechbench
 excerpt: '<strong>First-author work.</strong> GigaSpeechBench is a 680-hour, human-annotated, real-world ASR &amp; AST benchmark covering low-resource languages, Chinese dialects, English accents, vertical-domain terminology, and speech from older adults and children. <br/><a href="https://github.com/SpeechColab/GigaSpeechBench"><img src="https://img.shields.io/github/stars/SpeechColab/GigaSpeechBench?style=social" alt="GitHub stars"></a>'
 date: 2026-06-27
